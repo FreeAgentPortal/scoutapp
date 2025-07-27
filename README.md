@@ -23,10 +23,7 @@ NEXT_PUBLIC_AUTH_URL=http://localhost:3001
 NEXT_PUBLIC_API_URL=http://localhost:3001/api
 ```
 
-## Documentation
-
-- **[Authentication](./docs/authentication.md)** - User authentication and security features
-- More feature documentation coming soon...
+## Documentation of Features
 
 ## Project Structure
 
