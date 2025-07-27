@@ -2,11 +2,18 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/layout/authProvider/AuthProvider.layout";
+import { actionCardsData } from "./cards";
 import styles from "./DashboardView.module.scss";
 
 const DashboardView: React.FC = () => {
   const { user } = useAuth();
+  const router = useRouter();
+
+  const handleCardClick = (route: string) => {
+    router.push(route);
+  };
 
   return (
     <div className={styles.container}>
@@ -24,61 +31,30 @@ const DashboardView: React.FC = () => {
         </div>
 
         <div className={styles.actionsGrid}>
-          <motion.div
-            className={styles.actionCard}
-            whileHover={{ scale: 1.02, y: -5 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <div className={styles.actionIcon}>🔍</div>
-            <h3 className={styles.actionTitle}>Search Athletes</h3>
-            <p className={styles.actionDescription}>Find and browse through our database of athletes</p>
-            <motion.button className={styles.actionButton} whileHover={{ backgroundColor: "var(--primary-dark)" }}>
-              Start Search
-            </motion.button>
-          </motion.div>
-
-          <motion.div
-            className={styles.actionCard}
-            whileHover={{ scale: 1.02, y: -5 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <div className={styles.actionIcon}>📊</div>
-            <h3 className={styles.actionTitle}>My Reports</h3>
-            <p className={styles.actionDescription}>View and manage your scout reports</p>
-            <motion.button className={styles.actionButton} whileHover={{ backgroundColor: "var(--primary-dark)" }}>
-              View Reports
-            </motion.button>
-          </motion.div>
-
-          <motion.div
-            className={styles.actionCard}
-            whileHover={{ scale: 1.02, y: -5 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <div className={styles.actionIcon}>⭐</div>
-            <h3 className={styles.actionTitle}>Favorites</h3>
-            <p className={styles.actionDescription}>Quick access to your starred athletes</p>
-            <motion.button className={styles.actionButton} whileHover={{ backgroundColor: "var(--primary-dark)" }}>
-              View Favorites
-            </motion.button>
-          </motion.div>
-
-          <motion.div
-            className={styles.actionCard}
-            whileHover={{ scale: 1.02, y: -5 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <div className={styles.actionIcon}>⚙️</div>
-            <h3 className={styles.actionTitle}>Settings</h3>
-            <p className={styles.actionDescription}>Customize your scouting preferences</p>
-            <motion.button className={styles.actionButton} whileHover={{ backgroundColor: "var(--primary-dark)" }}>
-              Open Settings
-            </motion.button>
-          </motion.div>
+          {actionCardsData.map((card) => (
+            <motion.div
+              key={card.id}
+              className={styles.actionCard}
+              whileHover={{ scale: 1.02, y: -5 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              onClick={() => handleCardClick(card.route)}
+            >
+              <div className={styles.actionIcon}>{card.icon}</div>
+              <h3 className={styles.actionTitle}>{card.title}</h3>
+              <p className={styles.actionDescription}>{card.description}</p>
+              <motion.button
+                className={styles.actionButton}
+                whileHover={{ backgroundColor: "var(--primary-dark)" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCardClick(card.route);
+                }}
+              >
+                {card.buttonText}
+              </motion.button>
+            </motion.div>
+          ))}
         </div>
       </motion.div>
     </div>
