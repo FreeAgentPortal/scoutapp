@@ -1,0 +1,213 @@
+// LoginView.module.scss
+.container {
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm);
+}
+
+.content {
+  max-width: 400px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-hover);
+  text-align: center;
+
+  @media (max-width: 480px) {
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm);
+  }
+}
+
+.header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.logo {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-sm);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-xxl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+  margin: 0 0 var(--spacing-xs) 0;
+
+  @media (max-width: 480px) {
+    font-size: var(--font-size-xl);
+  }
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-silver-dark);
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+}
+
+.loginSection {
+  margin-bottom: var(--spacing-lg);
+}
+
+.formHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  position: relative;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: var(--color-silver-dark);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  position: absolute;
+  left: 0;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--color-black);
+  }
+}
+
+.loginTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-black);
+}
+
+.input {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  transition: all 0.2s ease;
+  background: white;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(75, 167, 214, 0.1);
+  }
+
+  &::placeholder {
+    color: var(--color-silver-dark);
+  }
+
+  @media (max-width: 480px) {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm);
+  }
+}
+
+.description {
+  font-size: var(--font-size-sm);
+  color: var(--color-silver-dark);
+  margin: 0 0 var(--spacing-md) 0;
+  line-height: 1.5;
+}
+
+.loginButton {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  box-shadow: var(--shadow-default);
+  transition: all 0.2s ease;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    background: var(--primary-dark);
+    box-shadow: var(--shadow-hover);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--disabled);
+  }
+
+  @media (max-width: 480px) {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm);
+  }
+}
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+}
+
+.features {
+  display: flex;
+  justify-content: space-around;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+}
+
+.featureItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-silver-dark);
+
+  @media (max-width: 480px) {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.featureIcon {
+  font-size: var(--font-size-md);
+}

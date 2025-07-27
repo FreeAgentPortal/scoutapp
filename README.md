@@ -1,22 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FAP Scout App
 
-## Getting Started
+Free Agent Portal - Scout Platform
 
-First, run the development server:
+A mobile-first web application for scouts to search athletes and generate detailed scout reports.
+
+## Quick Start
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create `.env.local`:
+
+```env
+NEXT_PUBLIC_AUTH_URL=http://localhost:3001
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+```
+
+## Documentation
+
+- **[Authentication](./docs/authentication.md)** - User authentication and security features
+- More feature documentation coming soon...
+
+## Project Structure
+
+```
+src/
+├── app/                 # Next.js app router
+├── components/          # Reusable UI components
+├── layout/             # Layout components (AuthGuard, providers)
+├── views/              # Page views (Login, Dashboard)
+├── state/              # State management
+├── types/              # TypeScript types
+└── utils/              # Utility functions
+```
+
+## Features
+
+- 🔐 **Secure Authentication** - Token-based auth with protected routes
+- 📱 **Mobile-First Design** - Optimized for phones and tablets
+- 🏈 **Scout Tools** - Athlete search and report generation
+- ⚡ **Smooth Animations** - Framer Motion powered interactions
+- 🎨 **Modern UI** - Professional sports-themed design
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: SCSS with CSS custom properties
+- **Animations**: Framer Motion
+- **State**: Zustand + React Query
+- **HTTP**: Axios
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

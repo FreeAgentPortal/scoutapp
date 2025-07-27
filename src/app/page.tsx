@@ -1,5 +1,10 @@
-import styles from "./page.module.css";
+import AuthGuard from "@/layout/authGuard/AuthGuard.layout";
+import DashboardView from "@/views/dashboard/DashboardView";
 
 export default function Home() {
-  return <div className={styles.page}></div>;
+  return (
+    <AuthGuard>
+      <DashboardView />
+    </AuthGuard>
+  );
 }

@@ -1,17 +1,13 @@
-import axios from 'axios';
+import axios from "axios";
 
 /**
- * @description   - Creates an axios instance with the base url of the api if we are in production
- *
- * @possible      - development http://localhost:5000/api/v1
- * @possible      - production  https://api.truthcasting.com/api/v1
+ * @description   - Creates an axios instance with the base url of the api
+ * @development   - http://localhost:3001/api
+ * @production    - Uses NEXT_PUBLIC_API_URL environment variable
  */
 export default axios.create({
-  baseURL:
-    process.env.NODE_ENV === 'production'
-      ? process.env.API_URL
-      : 'http://localhost:5000/api/v1',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api",
   headers: {
-    'Content-type': 'application/json',
+    "Content-type": "application/json",
   },
 });

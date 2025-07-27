@@ -1,0 +1,67 @@
+// LoadingView.module.scss
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.content {
+  text-align: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.logo {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-sm);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-xxl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  color: var(--color-metallic-blue-light);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 768px) {
+    font-size: var(--font-size-xl);
+  }
+}
+
+.subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-silver);
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+
+  @media (max-width: 768px) {
+    font-size: var(--font-size-md);
+  }
+}
+
+.loadingDots {
+  display: flex;
+  gap: 8px;
+  margin-top: var(--spacing-md);
+
+  span {
+    width: 8px;
+    height: 8px;
+    background: var(--color-metallic-blue);
+    border-radius: 50%;
+    display: block;
+    box-shadow: var(--shadow-default);
+  }
+}
