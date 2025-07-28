@@ -12,8 +12,17 @@ interface AuthGuardProps {
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
+  const [isHydrated, setIsHydrated] = React.useState(false);
 
-  if (isLoading) {
+  // re-render if the isAuthenticated state changes
+  React.useEffect(() => {
+    if (!isHydrated) {
+      setIsHydrated(true);
+    }
+    // This effect will run whenever the isAuthenticated state changes
+  }, [isAuthenticated]);
+
+  if (isLoading || !isHydrated) {
     return <LoadingView />;
   }
 

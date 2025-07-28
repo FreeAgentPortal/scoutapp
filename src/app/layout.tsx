@@ -4,6 +4,7 @@ import "./globals.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import AlertCenter from "@/layout/alertCenter/AlertCenter.layout";
 import { AuthProvider } from "@/layout/authProvider/AuthProvider.layout";
+import AuthGuard from "@/layout/authGuard/AuthGuard.layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "FAP Scout | Free Agent Portal",
-
+  metadataBase: new URL("https://scout.thefreeagentportal.com"),
   description:
     "The premier scouting platform for discovering and evaluating athletic talent. Search athletes, create detailed reports, and manage your recruiting pipeline with FAP Scout.",
   keywords: [
@@ -90,11 +91,6 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/manifest.json",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
 };
 
 export default function RootLayout({
@@ -105,9 +101,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AlertCenter />
         <ReactQueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AlertCenter />
+          <AuthProvider>
+            <AuthGuard>{children}</AuthGuard>
+          </AuthProvider>
         </ReactQueryProvider>
       </body>
     </html>

@@ -1,0 +1,107 @@
+.tabContainer {
+  width: 100%;
+}
+
+.tabList {
+  display: flex;
+  border-bottom: 2px solid var(--border-color, #e1e5e9);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  overflow-y: hidden;
+
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, #6b7280);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  border-radius: 8px 8px 0 0;
+
+  &:hover {
+    color: var(--primary-color, #2563eb);
+    background-color: var(--background-secondary, #f8fafc);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-color, #2563eb);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+.tabActive {
+  color: var(--primary-color, #2563eb);
+  background-color: var(--background-secondary, #f8fafc);
+}
+
+.tabIcon {
+  font-size: 1.1rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.tabLabel {
+  font-weight: 600;
+}
+
+.tabIndicator {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--primary-color, #2563eb);
+  border-radius: 1px;
+}
+
+.tabContent {
+  min-height: 400px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .tabList {
+    border-bottom-color: var(--border-color-dark, #374151);
+  }
+
+  .tab {
+    color: var(--text-secondary-dark, #9ca3af);
+
+    &:hover {
+      color: var(--primary-color-dark, #60a5fa);
+      background-color: var(--background-secondary-dark, #1f2937);
+    }
+
+    &:focus { 
+      box-shadow: 0 0 2px 2px var(--primary-color-dark, #60a5fa);
+    }
+  }
+
+  .tabActive {
+    color: var(--primary-color-dark, #60a5fa);
+    background-color: var(--background-secondary-dark, #1f2937);
+  }
+
+  .tabIndicator {
+    background-color: var(--primary-color-dark, #60a5fa);
+  }
+}

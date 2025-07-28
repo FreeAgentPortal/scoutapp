@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import WorkInProgress from "@/components/workInProgress/WorkInProgress.component";
+import Settings from "@/views/settings/Settings.view";
 
 export const metadata: Metadata = {
   title: "Settings | FAP Scout",
@@ -13,11 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function SettingsPage() {
-  return (
-    <WorkInProgress
-      title="Settings & Preferences"
-      description="A comprehensive settings panel is in development! You'll be able to customize notifications, search preferences, and account details."
-      icon="⚙️"
-    />
-  );
+  return <Settings />;
 }

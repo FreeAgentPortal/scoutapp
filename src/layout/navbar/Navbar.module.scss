@@ -7,6 +7,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  overflow-x: auto;
 }
 
 .headerContent {
@@ -15,9 +16,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--spacing-md);
 
-  @media (max-width: 768px) {
-    flex-direction: column;
+  @media (max-width: 968px) {
     gap: var(--spacing-sm);
   }
 }
@@ -26,6 +27,19 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
 }
 
 .logo {
@@ -52,23 +66,89 @@
   font-weight: var(--font-weight-medium);
 }
 
+// Navigation Styles
+.navigation {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navItem {
+  margin: 0;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  text-decoration: none;
+  color: var(--color-silver);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-metallic-blue-light);
+    transform: translateY(-1px);
+  }
+}
+
+.navIcon {
+  font-size: 1.1em;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
 .userSection {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+}
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: var(--spacing-xs);
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.profileImageContainer {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-metallic-blue-light);
+  }
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
   }
 }
 
 .userInfo {
   text-align: right;
-
-  @media (max-width: 768px) {
-    text-align: center;
-  }
 }
 
 .userName {
@@ -98,5 +178,214 @@
   &:hover {
     background: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+// Mobile Hamburger Menu Styles
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 101;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.hamburgerLine {
+  width: 30px;
+  height: 3px;
+  background: var(--color-metallic-blue-light);
+  border-radius: 2px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+
+  &.hamburgerLineActive {
+    &:first-child {
+      transform: rotate(45deg);
+    }
+
+    &:nth-child(2) {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    &:nth-child(3) {
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+// Mobile Drawer Styles
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  backdrop-filter: blur(2px);
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 280px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 20, 30, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.drawerHeader {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  color: var(--color-metallic-blue-light);
+  font-size: 24px;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+  }
+}
+
+.drawerUserProfile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-md);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.drawerProfileImageContainer {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-metallic-blue-light);
+  }
+}
+
+.drawerProfileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.drawerUserInfo {
+  text-align: center;
+}
+
+.drawerUserName {
+  display: block;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-metallic-blue-light);
+  font-size: var(--font-size-md);
+  margin-bottom: var(--spacing-xs);
+}
+
+.drawerUserRole {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-silver);
+  text-transform: capitalize;
+}
+
+.drawerNavigation {
+  flex: 1;
+  padding: var(--spacing-md) 0;
+}
+
+.drawerNavList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.drawerNavItem {
+  margin: 0;
+}
+
+.drawerNavLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  text-decoration: none;
+  color: var(--color-silver);
+  transition: all 0.2s ease;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  border-left: 3px solid transparent;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-metallic-blue-light);
+    border-left-color: var(--color-metallic-blue-light);
+  }
+}
+
+.drawerNavIcon {
+  font-size: 1.5em;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  min-width: 30px;
+}
+
+.drawerNavLabel {
+  font-weight: var(--font-weight-medium);
+}
+
+.drawerFooter {
+  padding: var(--spacing-lg) var(--spacing-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.drawerLogoutButton {
+  width: 100%;
+  padding: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
   }
 }

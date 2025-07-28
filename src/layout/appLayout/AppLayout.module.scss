@@ -1,6 +1,6 @@
 // AppLayout.module.scss
 .container {
-  min-height: 100vh;
+  min-height: 100svh;
   background: var(--bg-gradient);
   color: white;
   display: flex;
@@ -10,5 +10,5 @@
 .main {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
 }
