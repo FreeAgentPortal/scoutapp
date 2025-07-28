@@ -24,7 +24,7 @@ const DashboardView: React.FC = () => {
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <div className={styles.welcomeSection}>
-          <h2 className={styles.welcomeTitle}>Welcome back, {user?.firstName}!</h2>
+          <h2 className={styles.welcomeTitle}>Welcome back, {user?.fullName}!</h2>
           <p className={styles.welcomeText}>
             Ready to scout some talent? Use the tools below to search for athletes and generate detailed reports.
           </p>
