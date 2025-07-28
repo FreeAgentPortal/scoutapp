@@ -7,9 +7,7 @@ import { IScoutProfile } from "@/types/IScoutProfile";
 import styles from "./ScoutProfile.module.scss";
 import { useAuth } from "@/layout/authProvider/AuthProvider.layout";
 
-interface ScoutProfileTabProps {}
-
-const ScoutProfile: React.FC<ScoutProfileTabProps> = () => {
+const ScoutProfile: React.FC<any> = () => {
   const { user } = useAuth();
   // Fetch scout profile
   const { data, isLoading } = useApi({
@@ -124,7 +122,7 @@ const ScoutProfile: React.FC<ScoutProfileTabProps> = () => {
       <div className={styles.noProfile}>
         <div className={styles.noProfileIcon}>⚠️</div>
         <h3>No Scout Profile Found</h3>
-        <p>You don't have a scout profile associated with your account.</p>
+        <p>You don&apos;t have a scout profile associated with your account.</p>
       </div>
     );
   }

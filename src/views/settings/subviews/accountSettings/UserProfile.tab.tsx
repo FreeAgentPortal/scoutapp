@@ -7,10 +7,9 @@ import IUser from "@/types/IUser";
 import styles from "./UserProfile.module.scss";
 import { useAuth } from "@/layout/authProvider/AuthProvider.layout";
 import useApiHook from "@/hooks/useApi";
+ 
 
-interface UserProfileTabProps {}
-
-const UserProfile: React.FC<UserProfileTabProps> = () => {
+const UserProfile: React.FC<any> = () => {
   const { user: loggedInUser } = useAuth();
   const { data } = useApiHook({
     url: `/user/${loggedInUser?._id}`,
