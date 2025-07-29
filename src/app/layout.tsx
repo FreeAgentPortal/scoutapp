@@ -1,10 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import AlertCenter from "@/layout/alertCenter/AlertCenter.layout";
 import { AuthProvider } from "@/layout/authProvider/AuthProvider.layout";
 import AuthGuard from "@/layout/authGuard/AuthGuard.layout";
+import PwaInstall from "@/components/pwaInstall";
+import ServiceWorkerRegistration from "@/components/serviceWorker/ServiceWorkerRegistration";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +17,18 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: "FAP Scout | Free Agent Portal",
@@ -36,6 +50,45 @@ export const metadata: Metadata = {
   publisher: "Free Agent Portal",
   applicationName: "FAP Scout",
   category: "Sports",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "FAP Scout",
+    startupImage: [
+      {
+        url: "/images/apple-splash-2048-2732.png",
+        media: "(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)",
+      },
+      {
+        url: "/images/apple-splash-1668-2224.png", 
+        media: "(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)",
+      },
+      {
+        url: "/images/apple-splash-1536-2048.png",
+        media: "(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)",
+      },
+      {
+        url: "/images/apple-splash-1284-2778.png",
+        media: "(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)",
+      },
+      {
+        url: "/images/apple-splash-1170-2532.png",
+        media: "(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)",
+      },
+      {
+        url: "/images/apple-splash-1125-2436.png",
+        media: "(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)",
+      },
+      {
+        url: "/images/apple-splash-828-1792.png",
+        media: "(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)",
+      },
+      {
+        url: "/images/apple-splash-750-1334.png",
+        media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)",
+      },
+    ],
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -106,6 +159,8 @@ export default function RootLayout({
           <AuthProvider>
             <AuthGuard>{children}</AuthGuard>
           </AuthProvider>
+          <PwaInstall />
+          <ServiceWorkerRegistration />
         </ReactQueryProvider>
       </body>
     </html>
