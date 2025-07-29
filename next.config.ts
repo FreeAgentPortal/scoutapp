@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
     ],
     // If the above doesn't work, uncomment the custom loader below:
     // loader: 'custom',
-    // loaderFile: './src/utils/customImageLoader.ts',
+    loaderFile: "./src/utils/customImageLoader.ts",
 
     // Image optimization settings
     minimumCacheTTL: 60,
