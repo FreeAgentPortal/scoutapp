@@ -6,7 +6,7 @@ import styles from "./UserProfile.module.scss";
 import formStyles from "@/styles/Form.module.scss";
 import useApiHook from "@/hooks/useApi";
 import { useUser } from "@/state/auth";
-import { PhotoUpload } from "@/components/photoUpload";
+// import { PhotoUpload } from "@/components/photoUpload";
 import { useInterfaceStore } from "@/state/interface";
 
 const UserProfile: React.FC<any> = () => {
@@ -181,7 +181,7 @@ const UserProfile: React.FC<any> = () => {
           <h3 className={formStyles.sectionTitle}>Profile Picture</h3>
 
           <div className={styles.imageContainer}>
-            <PhotoUpload
+            {/* <PhotoUpload
               default={data?.payload?.profileImageUrl}
               name="profileImageUrl"
               action={`${process.env.NEXT_PUBLIC_API_URL}/upload/cloudinary/file`}
@@ -197,7 +197,7 @@ const UserProfile: React.FC<any> = () => {
                 height: "200px",
                 borderRadius: "50%",
               }}
-            />
+            /> */}
           </div>
         </div>
 

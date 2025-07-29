@@ -5,9 +5,9 @@ const nextConfig: NextConfig = {
   images: {
     // Try the standard approach first
     domains: [
-      'res.cloudinary.com',
-      'api.thefreeagentportal.com', 
-      'thefreeagentportal.com',
+      "res.cloudinary.com",
+      "api.thefreeagentportal.com",
+      "thefreeagentportal.com",
       // Add specific domains you know about
     ],
     remotePatterns: [
@@ -16,19 +16,19 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
       {
-        protocol: "http", 
+        protocol: "http",
         hostname: "**",
       },
     ],
     // If the above doesn't work, uncomment the custom loader below:
     // loader: 'custom',
     // loaderFile: './src/utils/customImageLoader.ts',
-    
+
     // Image optimization settings
     minimumCacheTTL: 60,
-    formats: ['image/webp', 'image/avif'],
+    formats: ["image/webp", "image/avif"],
     dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
+    contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   env: {
