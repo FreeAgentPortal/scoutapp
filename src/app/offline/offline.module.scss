@@ -19,7 +19,7 @@
 .offlineIcon {
   color: #6b7280;
   margin-bottom: 24px;
-  
+
   svg {
     display: block;
     margin: 0 auto;
@@ -41,7 +41,7 @@
 }
 
 .retryButton {
-  background: #007AFF;
+  background: #007aff;
   color: white;
   border: none;
   border-radius: 12px;
@@ -50,12 +50,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
   &:hover {
-    background: #0056CC;
+    background: #0056cc;
     transform: translateY(-1px);
   }
-  
+
   &:active {
     transform: translateY(0);
   }

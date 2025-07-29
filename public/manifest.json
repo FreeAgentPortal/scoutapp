@@ -19,7 +19,7 @@
       "label": "Scout App Dashboard"
     },
     {
-      "src": "/images/screenshot-narrow.png", 
+      "src": "/images/screenshot-narrow.png",
       "sizes": "640x1136",
       "type": "image/png",
       "form_factor": "narrow",

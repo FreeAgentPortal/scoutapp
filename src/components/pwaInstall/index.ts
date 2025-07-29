@@ -1,1 +1,1 @@
-export { default } from './PwaInstall.component';
+export { default } from "./PwaInstall.component";
