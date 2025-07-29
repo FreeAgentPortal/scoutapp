@@ -1,103 +1,286 @@
-@use '@/styles/globals.scss' as *;
+@use "@/styles/globals.scss" as *;
 
+// Main form container
 .form {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   width: 100%;
+
+  // Form inputs
+  .input,
+  input,
+  select,
+  textarea {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    width: 100%;
+    font-family: inherit;
+    transition: var(--simple-animation, all 0.2s ease-in-out);
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-metallic-blue, #1e40af);
+      box-shadow: 0 0 0 3px rgba(122, 205, 242, 0.1);
+    }
+
+    &::placeholder {
+      color: var(--color-silver, #9ca3af);
+    }
+
+    &:disabled,
+    &.inputDisabled {
+      background: rgba(0, 0, 0, 0.02);
+      border-color: rgba(0, 0, 0, 0.05);
+      color: var(--color-silver-dark, #6b7280);
+      cursor: not-allowed;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
 }
 
-.row {
+// Form sections
+.formSection {
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 1.25rem;
+  }
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-metallic-blue, #1e40af);
+  margin: 0 0 1rem 0;
+  border-bottom: 2px solid var(--color-metallic-blue-light, #3b82f6);
+  padding-bottom: 0.25rem;
+  display: inline-block;
+}
+
+// Form rows and responsive layout
+.row,
+.formRow {
   display: flex;
   gap: 1rem;
 
-  .field {
+  .field,
+  .formGroup {
     flex: 1;
   }
 
   @include mobile {
     flex-direction: column;
   }
+
+  // Grid version for more complex layouts
+  &.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
 }
-.field {
+
+// Form fields
+.field,
+.formGroup {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 
-  label {
+  label,
+  .label {
     font-size: 0.95rem;
     font-weight: 500;
-  }
-
-  input,
-  .input,
-  select {
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--secondary);
-    background: rgba(255, 255, 255, 0.1);
-    font-size: 1rem;
-    width: 100%;
-    &:focus {
-      outline: none;
-      border-color: white;
-    }
-  }
-
-  textarea {
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--secondary);
-    background: rgba(255, 255, 255, 0.1);
-    font-size: 1rem;
-    resize: vertical;
-
-    &:focus {
-      outline: none;
-      border-color: white;
-    }
+    color: var(--color-black, #000);
+    margin-bottom: 0.25rem;
   }
 }
 
+.inputDisabled {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.05);
+  color: var(--color-silver-dark, #6b7280);
+  cursor: not-allowed;
+}
+
+// Array/Tag fields
+.arrayField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.tagContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 0.5rem;
+  border: 2px dashed rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.01);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--color-metallic-blue-light, #3b82f6);
+  color: white;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.tagRemove {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 0;
+  margin-left: 0.25rem;
+
+  &:hover {
+    color: var(--color-error-red, #ef4444);
+  }
+}
+
+.addField {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.addInput {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-metallic-blue, #1e40af);
+  }
+}
+
+.addButton {
+  padding: 0.5rem 0.75rem;
+  background: var(--color-metallic-blue, #1e40af);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--simple-animation, all 0.2s ease-in-out);
+
+  &:hover {
+    background: var(--color-metallic-blue-dark, #1e3a8a);
+  }
+}
+
+// Form validation
 .error {
   font-size: 0.85rem;
-  color: #ff6b6b;
+  color: var(--color-error-red, #ef4444);
+  margin-top: 0.25rem;
 }
 
+// Form actions
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  gap: 0.75rem;
+
+  @include mobile {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.editActions {
+  display: flex;
+  gap: 0.75rem;
+
+  @include mobile {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+// Buttons
 .submit,
-.back {
+.back,
+.editButton,
+.saveButton,
+.cancelButton {
   margin-top: 1rem;
-  width: 100%;
-  padding: 0.85rem;
+  padding: 0.85rem 1.5rem;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 600;
   border-radius: 0.5rem;
   border: none;
   cursor: pointer;
+  transition: var(--simple-animation, all 0.2s ease-in-out);
+
+  @include mobile {
+    width: 100%;
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
 }
 
-.submit {
-  background: var(--secondary);
+.submit,
+.editButton {
+  background: var(--color-metallic-blue, #1e40af);
   color: white;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.35);
+    background: var(--color-metallic-blue-dark, #1e3a8a);
   }
 }
 
-.back {
+.saveButton {
+  background: var(--primary, #1e40af);
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: var(--primary-dark, #1e3a8a);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.back,
+.cancelButton {
   background: transparent;
-  color: #ccc;
+  color: var(--color-silver-dark, #6b7280);
+  border: 2px solid rgba(0, 0, 0, 0.1);
 
   &:hover {
-    color: white;
-  }
-}
-
-@include mobile {
-  .submit,
-  .back {
-    font-size: 0.95rem;
-    padding: 0.7rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.2);
+    color: var(--color-black, #000);
   }
 }

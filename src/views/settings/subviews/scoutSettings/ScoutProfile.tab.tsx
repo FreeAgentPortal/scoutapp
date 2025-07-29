@@ -2,18 +2,23 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import useApi from "@/hooks/useApi";
-import { IScoutProfile } from "@/types/IScoutProfile";
 import styles from "./ScoutProfile.module.scss";
+import formStyles from "@/styles/Form.module.scss";
 import { useAuth } from "@/layout/authProvider/AuthProvider.layout";
+import MultiSelect from "@/components/multiSelect";
+import { SPORTS_DATA } from "@/data/sports.data";
+import { TEAMS_DATA } from "@/data/teams.data";
+import { LEAGUES_DATA } from "@/data/leagues.data";
+import useApiHook from "@/hooks/useApi";
+import { useUser } from "@/state/auth";
 
 const ScoutProfile: React.FC<any> = () => {
-  const { user } = useAuth();
+  const { data: user } = useUser();
   // Fetch scout profile
-  const { data, isLoading } = useApi({
+  const { data, isLoading } = useApiHook({
     method: "GET",
     key: ["profile", "scout"],
-    url: `/scout/profile/${user?.profileRefs["scout"]}`,
+    url: `/profiles/scout/${user?.profileRefs["scout"]}`,
     enabled: !!user?.profileRefs["scout"],
   }) as any;
 
@@ -29,9 +34,6 @@ const ScoutProfile: React.FC<any> = () => {
   });
 
   const [isEditing, setIsEditing] = useState(false);
-  const [newTeam, setNewTeam] = useState("");
-  const [newSport, setNewSport] = useState("");
-  const [newLeague, setNewLeague] = useState("");
 
   useEffect(() => {
     if (scoutProfile) {
@@ -47,9 +49,8 @@ const ScoutProfile: React.FC<any> = () => {
     }
   }, [scoutProfile]);
 
-  const updateScoutMutation = useApi({
+  const { mutate: updateScoutMutation } = useApiHook({
     method: "PUT",
-    url: `/scout/profile/${scoutProfile?.id}`,
     key: ["profile", "scout"],
     successMessage: "Scout profile updated successfully!",
     queriesToInvalidate: ["profile,scout"],
@@ -62,35 +63,23 @@ const ScoutProfile: React.FC<any> = () => {
       [name]: value,
     }));
   };
-
-  const handleAddItem = (type: "teams" | "sports" | "leagues", value: string) => {
-    if (value.trim()) {
-      setFormData((prev) => ({
-        ...prev,
-        [type]: [...prev[type], value.trim()],
-      }));
-
-      if (type === "teams") setNewTeam("");
-      if (type === "sports") setNewSport("");
-      if (type === "leagues") setNewLeague("");
-    }
-  };
-
-  const handleRemoveItem = (type: "teams" | "sports" | "leagues", index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      [type]: prev[type].filter((_, i) => i !== index),
-    }));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await updateScoutMutation.mutate({ formData });
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error updating scout profile:", error);
-    }
+    await updateScoutMutation(
+      {
+        url: `/profiles/scout/${scoutProfile?._id}`,
+        formData,
+      },
+      {
+        onSuccess: () => {
+          setIsEditing(false);
+          // Optionally refetch or update local state
+        },
+        onError: (error: any) => {
+          console.error("Error updating scout profile:", error);
+        },
+      }
+    );
   };
 
   const handleCancel = () => {
@@ -135,17 +124,17 @@ const ScoutProfile: React.FC<any> = () => {
       </div>
 
       <motion.form
-        className={styles.form}
+        className={formStyles.form}
         onSubmit={handleSubmit}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
-        <div className={styles.formSection}>
-          <h3 className={styles.sectionTitle}>Professional Information</h3>
+        <div className={formStyles.formSection}>
+          <h3 className={formStyles.sectionTitle}>Professional Information</h3>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="displayName" className={styles.label}>
+          <div className={formStyles.formGroup}>
+            <label htmlFor="displayName" className={formStyles.label}>
               Display Name
             </label>
             <input
@@ -155,14 +144,14 @@ const ScoutProfile: React.FC<any> = () => {
               value={formData.displayName}
               onChange={handleInputChange}
               disabled={!isEditing}
-              className={`${styles.input} ${!isEditing ? styles.inputDisabled : ""}`}
+              className={`${styles.input} ${!isEditing ? formStyles.inputDisabled : ""}`}
               placeholder="Your professional name"
             />
           </div>
 
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="contactNumber" className={styles.label}>
+          <div className={`${formStyles.formRow} ${formStyles.grid}`}>
+            <div className={formStyles.formGroup}>
+              <label htmlFor="contactNumber" className={formStyles.label}>
                 Contact Number
               </label>
               <input
@@ -172,13 +161,13 @@ const ScoutProfile: React.FC<any> = () => {
                 value={formData.contactNumber}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={`${styles.input} ${!isEditing ? styles.inputDisabled : ""}`}
+                className={`${styles.input} ${!isEditing ? formStyles.inputDisabled : ""}`}
                 placeholder="Professional contact"
               />
             </div>
 
-            <div className={styles.formGroup}>
-              <label htmlFor="email" className={styles.label}>
+            <div className={formStyles.formGroup}>
+              <label htmlFor="email" className={formStyles.label}>
                 Professional Email
               </label>
               <input
@@ -188,14 +177,14 @@ const ScoutProfile: React.FC<any> = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={`${styles.input} ${!isEditing ? styles.inputDisabled : ""}`}
+                className={`${styles.input} ${!isEditing ? formStyles.inputDisabled : ""}`}
                 placeholder="scout@example.com"
               />
             </div>
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="bio" className={styles.label}>
+          <div className={formStyles.formGroup}>
+            <label htmlFor="bio" className={formStyles.label}>
               Biography
             </label>
             <textarea
@@ -204,185 +193,52 @@ const ScoutProfile: React.FC<any> = () => {
               value={formData.bio}
               onChange={handleInputChange}
               disabled={!isEditing}
-              className={`${styles.textarea} ${!isEditing ? styles.inputDisabled : ""}`}
+              className={`${styles.textarea} ${!isEditing ? formStyles.inputDisabled : ""}`}
               placeholder="Tell others about your scouting experience and expertise..."
               rows={4}
             />
           </div>
         </div>
 
-        <div className={styles.formSection}>
-          <h3 className={styles.sectionTitle}>Specializations</h3>
+        <div className={formStyles.formSection}>
+          <h3 className={formStyles.sectionTitle}>Specializations</h3>
 
           {/* Sports */}
-          <div className={styles.arrayField}>
-            <label className={styles.label}>Sports</label>
-            <div className={styles.tagContainer}>
-              {formData.sports.map((sport, index) => (
-                <motion.span
-                  key={index}
-                  className={styles.tag}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {sport}
-                  {isEditing && (
-                    <button
-                      type="button"
-                      className={styles.tagRemove}
-                      onClick={() => handleRemoveItem("sports", index)}
-                    >
-                      ×
-                    </button>
-                  )}
-                </motion.span>
-              ))}
-            </div>
-            {isEditing && (
-              <div className={styles.addField}>
-                <input
-                  type="text"
-                  value={newSport}
-                  onChange={(e) => setNewSport(e.target.value)}
-                  placeholder="Add a sport"
-                  className={styles.addInput}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddItem("sports", newSport);
-                    }
-                  }}
-                />
-                <button type="button" onClick={() => handleAddItem("sports", newSport)} className={styles.addButton}>
-                  Add
-                </button>
-              </div>
-            )}
-          </div>
+          <MultiSelect
+            label="Sports"
+            options={SPORTS_DATA}
+            selectedValues={formData.sports}
+            onSelectionChange={(values: string[]) => setFormData({ ...formData, sports: values })}
+            placeholder="Select sports you scout..."
+            disabled={!isEditing}
+          />
 
           {/* Teams */}
-          <div className={styles.arrayField}>
-            <label className={styles.label}>Teams</label>
-            <div className={styles.tagContainer}>
-              {formData.teams.map((team, index) => (
-                <motion.span
-                  key={index}
-                  className={styles.tag}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {team}
-                  {isEditing && (
-                    <button type="button" className={styles.tagRemove} onClick={() => handleRemoveItem("teams", index)}>
-                      ×
-                    </button>
-                  )}
-                </motion.span>
-              ))}
-            </div>
-            {isEditing && (
-              <div className={styles.addField}>
-                <input
-                  type="text"
-                  value={newTeam}
-                  onChange={(e) => setNewTeam(e.target.value)}
-                  placeholder="Add a team"
-                  className={styles.addInput}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddItem("teams", newTeam);
-                    }
-                  }}
-                />
-                <button type="button" onClick={() => handleAddItem("teams", newTeam)} className={styles.addButton}>
-                  Add
-                </button>
-              </div>
-            )}
-          </div>
+          <MultiSelect
+            label="Teams"
+            options={TEAMS_DATA}
+            selectedValues={formData.teams}
+            onSelectionChange={(values: string[]) => setFormData({ ...formData, teams: values })}
+            placeholder="Select teams you follow..."
+            disabled={!isEditing}
+          />
 
           {/* Leagues */}
-          <div className={styles.arrayField}>
-            <label className={styles.label}>Leagues</label>
-            <div className={styles.tagContainer}>
-              {formData.leagues.map((league, index) => (
-                <motion.span
-                  key={index}
-                  className={styles.tag}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {league}
-                  {isEditing && (
-                    <button
-                      type="button"
-                      className={styles.tagRemove}
-                      onClick={() => handleRemoveItem("leagues", index)}
-                    >
-                      ×
-                    </button>
-                  )}
-                </motion.span>
-              ))}
-            </div>
-            {isEditing && (
-              <div className={styles.addField}>
-                <input
-                  type="text"
-                  value={newLeague}
-                  onChange={(e) => setNewLeague(e.target.value)}
-                  placeholder="Add a league"
-                  className={styles.addInput}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddItem("leagues", newLeague);
-                    }
-                  }}
-                />
-                <button type="button" onClick={() => handleAddItem("leagues", newLeague)} className={styles.addButton}>
-                  Add
-                </button>
-              </div>
-            )}
-          </div>
+          <MultiSelect
+            label="Leagues"
+            options={LEAGUES_DATA}
+            selectedValues={formData.leagues}
+            onSelectionChange={(values: string[]) => setFormData({ ...formData, leagues: values })}
+            placeholder="Select leagues you scout..."
+            disabled={!isEditing}
+          />
         </div>
 
-        <div className={styles.formSection}>
-          <h3 className={styles.sectionTitle}>Profile Status</h3>
-          <div className={styles.infoGrid}>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Profile ID:</span>
-              <span className={styles.infoValue}>{scoutProfile.id}</span>
-            </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Status:</span>
-              <span
-                className={`${styles.infoValue} ${scoutProfile.isActive ? styles.statusActive : styles.statusInactive}`}
-              >
-                {scoutProfile.isActive ? "Active" : "Inactive"}
-              </span>
-            </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Created:</span>
-              <span className={styles.infoValue}>{new Date(scoutProfile.createdAt).toLocaleDateString()}</span>
-            </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Last Updated:</span>
-              <span className={styles.infoValue}>{new Date(scoutProfile.updatedAt).toLocaleDateString()}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.actions}>
+        <div className={formStyles.actions}>
           {!isEditing ? (
             <motion.button
               type="button"
-              className={styles.editButton}
+              className={formStyles.editButton}
               onClick={() => setIsEditing(true)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -390,10 +246,10 @@ const ScoutProfile: React.FC<any> = () => {
               Edit Scout Profile
             </motion.button>
           ) : (
-            <div className={styles.editActions}>
+            <div className={formStyles.editActions}>
               <motion.button
                 type="button"
-                className={styles.cancelButton}
+                className={formStyles.cancelButton}
                 onClick={handleCancel}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -402,7 +258,7 @@ const ScoutProfile: React.FC<any> = () => {
               </motion.button>
               <motion.button
                 type="submit"
-                className={styles.saveButton}
+                className={formStyles.saveButton}
                 disabled={updateScoutMutation.isPending}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

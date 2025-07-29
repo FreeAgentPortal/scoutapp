@@ -1,0 +1,102 @@
+@use "@/styles/globals.scss" as *;
+
+.placeholder {
+  color: var(--color-silver-dark, #9ca3af);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-height: 300px;
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+
+.optionsList {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.option {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    background: var(--color-metallic-blue-light, #e3f2fd);
+  }
+
+  &:focus {
+    outline: none;
+    background: var(--color-metallic-blue-light, #e3f2fd);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.noOptions {
+  padding: 1rem;
+  text-align: center;
+  color: var(--color-silver-dark, #6b7280);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.moreOptions {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  color: var(--color-silver-dark, #6b7280);
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.02);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// Scrollbar styling for the dropdown
+.optionsList {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  }
+}

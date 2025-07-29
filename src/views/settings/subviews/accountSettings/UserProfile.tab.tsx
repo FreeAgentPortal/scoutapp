@@ -2,15 +2,13 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import useApi from "@/hooks/useApi";
-import IUser from "@/types/IUser";
 import styles from "./UserProfile.module.scss";
-import { useAuth } from "@/layout/authProvider/AuthProvider.layout";
+import formStyles from "@/styles/Form.module.scss";
 import useApiHook from "@/hooks/useApi";
- 
+import { useUser } from "@/state/auth";
 
 const UserProfile: React.FC<any> = () => {
-  const { user: loggedInUser } = useAuth();
+  const { data: loggedInUser, refetch } = useUser();
   const { data } = useApiHook({
     url: `/user/${loggedInUser?._id}`,
     key: ["user", loggedInUser?._id as string],
@@ -26,12 +24,11 @@ const UserProfile: React.FC<any> = () => {
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const updateUserMutation = useApi({
+  const { mutate: updateUserMutation } = useApiHook({
     method: "PUT",
-    url: "/auth/profile",
     key: ["user"],
     successMessage: "User profile updated successfully!",
-    queriesToInvalidate: ["user"],
+    queriesToInvalidate: [`user,${loggedInUser?._id}`],
   }) as any;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,12 +41,21 @@ const UserProfile: React.FC<any> = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await updateUserMutation.mutate({ formData });
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error updating user profile:", error);
-    }
+    await updateUserMutation(
+      {
+        url: `/user/${loggedInUser?._id}`,
+        formData,
+      },
+      {
+        onSuccess: () => {
+          setIsEditing(false);
+          refetch();
+        },
+        onError: (error: any) => {
+          console.error("Error updating user profile:", error);
+        },
+      }
+    );
   };
 
   const handleCancel = () => {
@@ -80,18 +86,18 @@ const UserProfile: React.FC<any> = () => {
       </div>
 
       <motion.form
-        className={styles.form}
+        className={formStyles.form}
         onSubmit={handleSubmit}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
-        <div className={styles.formSection}>
-          <h3 className={styles.sectionTitle}>Personal Information</h3>
+        <div className={formStyles.formSection}>
+          <h3 className={formStyles.sectionTitle}>Personal Information</h3>
 
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="firstName" className={styles.label}>
+          <div className={`${formStyles.formRow} ${formStyles.grid}`}>
+            <div className={formStyles.formGroup}>
+              <label htmlFor="firstName" className={formStyles.label}>
                 First Name
               </label>
               <input
@@ -101,13 +107,13 @@ const UserProfile: React.FC<any> = () => {
                 value={formData.firstName}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={`${styles.input} ${!isEditing ? styles.inputDisabled : ""}`}
+                className={`${formStyles.input} ${!isEditing ? formStyles.inputDisabled : ""}`}
                 required
               />
             </div>
 
-            <div className={styles.formGroup}>
-              <label htmlFor="lastName" className={styles.label}>
+            <div className={formStyles.formGroup}>
+              <label htmlFor="lastName" className={formStyles.label}>
                 Last Name
               </label>
               <input
@@ -117,14 +123,14 @@ const UserProfile: React.FC<any> = () => {
                 value={formData.lastName}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={`${styles.input} ${!isEditing ? styles.inputDisabled : ""}`}
+                className={`${formStyles.input} ${!isEditing ? formStyles.inputDisabled : ""}`}
                 required
               />
             </div>
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="email" className={styles.label}>
+          <div className={formStyles.formGroup}>
+            <label htmlFor="email" className={formStyles.label}>
               Email Address
             </label>
             <input
@@ -134,7 +140,7 @@ const UserProfile: React.FC<any> = () => {
               value={formData.email}
               onChange={handleInputChange}
               disabled={!isEditing}
-              className={`${styles.input} ${!isEditing ? styles.inputDisabled : ""}`}
+              className={`${formStyles.input} ${!isEditing ? formStyles.inputDisabled : ""}`}
               required
             />
             {data?.payload?.isEmailVerified ? (
@@ -144,8 +150,8 @@ const UserProfile: React.FC<any> = () => {
             )}
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="phoneNumber" className={styles.label}>
+          <div className={formStyles.formGroup}>
+            <label htmlFor="phoneNumber" className={formStyles.label}>
               Phone Number
             </label>
             <input
@@ -155,16 +161,16 @@ const UserProfile: React.FC<any> = () => {
               value={formData.phoneNumber}
               onChange={handleInputChange}
               disabled={!isEditing}
-              className={`${styles.input} ${!isEditing ? styles.inputDisabled : ""}`}
+              className={`${formStyles.input} ${!isEditing ? formStyles.inputDisabled : ""}`}
             />
           </div>
         </div>
 
-        <div className={styles.actions}>
+        <div className={formStyles.actions}>
           {!isEditing ? (
             <motion.button
               type="button"
-              className={styles.editButton}
+              className={formStyles.editButton}
               onClick={() => setIsEditing(true)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -172,10 +178,10 @@ const UserProfile: React.FC<any> = () => {
               Edit Profile
             </motion.button>
           ) : (
-            <div className={styles.editActions}>
+            <div className={formStyles.editActions}>
               <motion.button
                 type="button"
-                className={styles.cancelButton}
+                className={formStyles.cancelButton}
                 onClick={handleCancel}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -184,7 +190,7 @@ const UserProfile: React.FC<any> = () => {
               </motion.button>
               <motion.button
                 type="submit"
-                className={styles.saveButton}
+                className={formStyles.saveButton}
                 disabled={updateUserMutation.isPending}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
