@@ -13,6 +13,7 @@
     "axios": "^1.11.0",
     "framer-motion": "^12.23.9",
     "next": "15.4.4",
+    "nextjs-toploader": "^3.8.16",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "sass": "^1.89.2",

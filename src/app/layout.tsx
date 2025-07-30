@@ -6,6 +6,7 @@ import { AuthProvider } from "@/layout/authProvider/AuthProvider.layout";
 import AuthGuard from "@/layout/authGuard/AuthGuard.layout";
 import PwaInstall from "@/components/pwaInstall";
 import ServiceWorkerRegistration from "@/components/serviceWorker/ServiceWorkerRegistration";
+import NextTopLoader from "nextjs-toploader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -161,6 +162,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <NextTopLoader
+          color="var(--primary)"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px var(--primary-dark),0 0 5px var(--primary)"
+          showForHashAnchor
+        />
         <ReactQueryProvider>
           <AuthProvider>
             <AuthGuard>{children}</AuthGuard>

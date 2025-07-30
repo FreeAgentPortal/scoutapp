@@ -165,7 +165,6 @@ const Search: React.FC = () => {
                   showFullInfo={true}
                   showActions={true}
                   onClick={handleAthleteClick}
-                  onViewProfile={handleViewProfile}
                   onToggleFavorite={handleToggleFavorite}
                   isFavorited={
                     profile?.payload?.favoritedAthletes?.includes(athlete._id) || false

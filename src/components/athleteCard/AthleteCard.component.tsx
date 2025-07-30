@@ -4,6 +4,7 @@ import React, { forwardRef, useImperativeHandle } from "react";
 import Image from "next/image";
 import { AthleteCardProps, AthleteCardRef } from "./AthleteCard.types";
 import styles from "./AthleteCard.module.scss";
+import Link from "next/link";
 
 const AthleteCard = forwardRef<AthleteCardRef, AthleteCardProps>(
   (
@@ -14,7 +15,6 @@ const AthleteCard = forwardRef<AthleteCardRef, AthleteCardProps>(
       showFullInfo = true,
       showActions = true,
       onClick,
-      onViewProfile,
       onToggleFavorite,
       isFavorited = false,
       className = "",
@@ -28,13 +28,6 @@ const AthleteCard = forwardRef<AthleteCardRef, AthleteCardProps>(
     const handleCardClick = () => {
       if (onClick && !loading) {
         onClick(athlete);
-      }
-    };
-
-    const handleViewProfile = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      if (onViewProfile && !loading) {
-        onViewProfile(athlete);
       }
     };
 
@@ -165,9 +158,9 @@ const AthleteCard = forwardRef<AthleteCardRef, AthleteCardProps>(
           {/* Actions */}
           {showActions && (
             <div className={styles.actions}>
-              <button className={styles.viewButton} onClick={handleViewProfile}>
+              <Link href={`/athlete/${athlete._id}`} className={styles.viewButton}>
                 View Profile
-              </button>
+              </Link>
             </div>
           )}
         </div>

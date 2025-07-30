@@ -13,8 +13,6 @@ export interface AthleteCardProps {
   showActions?: boolean;
   /** Callback fired when the athlete card is clicked */
   onClick?: (athlete: IAthlete) => void;
-  /** Callback fired when the view profile action is triggered */
-  onViewProfile?: (athlete: IAthlete) => void;
   /** Callback fired when the favorite action is triggered */
   onToggleFavorite?: (athlete: IAthlete) => void;
   /** Whether the athlete is currently favorited */
