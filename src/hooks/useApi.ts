@@ -71,6 +71,7 @@ const useApiHook = (options: {
   filter?: any;
   keyword?: string;
   sort?: any;
+  limit?: number;
   include?: any;
   queriesToInvalidate?: string[];
   successMessage?: string;
@@ -93,6 +94,7 @@ const useApiHook = (options: {
     filter,
     sort,
     include,
+    limit,
     queriesToInvalidate,
     successMessage,
     redirectUrl,
@@ -115,6 +117,7 @@ const useApiHook = (options: {
         defaultFilter: filter,
         defaultSort: sort,
         defaultInclude: include,
+        defaultPageLimit: limit,
       }),
     enabled: enabled && method === "GET",
     refetchOnWindowFocus,

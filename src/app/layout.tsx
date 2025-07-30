@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import AlertCenter from "@/layout/alertCenter/AlertCenter.layout";
 import { AuthProvider } from "@/layout/authProvider/AuthProvider.layout";
 import AuthGuard from "@/layout/authGuard/AuthGuard.layout";
 import PwaInstall from "@/components/pwaInstall";
@@ -163,7 +162,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ReactQueryProvider>
-          <AlertCenter />
           <AuthProvider>
             <AuthGuard>{children}</AuthGuard>
           </AuthProvider>

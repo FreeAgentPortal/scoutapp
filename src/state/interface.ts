@@ -1,8 +1,8 @@
 //create a zustand store for a token of a user
-import { create } from 'zustand';
-import { mountStoreDevtool } from 'simple-zustand-devtools';
-import { v4 as uuidv4 } from 'uuid';
-import { AlertMessage } from '@/layout/alertCenter/AlertMessageType';
+import { create } from "zustand";
+import { mountStoreDevtool } from "simple-zustand-devtools";
+import { v4 as uuidv4 } from "uuid";
+import { AlertMessage } from "@/layout/alertCenter/AlertMessageType";
 
 interface InterfaceState {
   alerts: AlertMessage[];
@@ -15,7 +15,7 @@ export const useInterfaceStore = create<InterfaceState>((set: any, get: any) => 
   addAlert: (alert: AlertMessage) => {
     const id = uuidv4();
     set((state: InterfaceState) => ({
-      alerts: [...state.alerts, { ...alert, id }],
+      alerts: [...state.alerts, { duration: 5000, ...alert, id }],
     }));
   },
   removeAlert: (id: string) => {
@@ -25,6 +25,6 @@ export const useInterfaceStore = create<InterfaceState>((set: any, get: any) => 
   },
 }));
 
-if (process.env.NODE_ENV === 'development') {
-  mountStoreDevtool('Store', useInterfaceStore);
+if (process.env.NODE_ENV === "development") {
+  mountStoreDevtool("Store", useInterfaceStore);
 }

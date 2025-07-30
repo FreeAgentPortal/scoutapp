@@ -1,5 +1,12 @@
 @use "@/styles/globals.scss" as *;
 
+.searchContainer {
+  padding: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 /* Header Section */
 .searchHeader {
   text-align: center;
@@ -172,15 +179,9 @@
 }
 
 .pagination {
-  padding: 1rem;
-  background: var(--background-secondary, #f8f9fa);
-  border-radius: 8px;
-  border: 2px dashed var(--border-color, #ddd);
-}
-
-.paginationPlaceholder {
-  text-align: center;
-  color: var(--text-secondary, #666);
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-md);
 }
 
 /* Mobile Responsiveness */

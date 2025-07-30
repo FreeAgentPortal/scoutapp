@@ -1,44 +1,56 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useSearchStore } from "@/state/search";
 import useApiHook from "@/hooks/useApi";
 import SearchComponent from "@/components/search";
 import AthleteCard from "@/components/athleteCard";
+import Paginator from "@/components/pagination/Paginator.component";
 import { IAthlete } from "@/types/IAthlete";
 import styles from "./Search.module.scss";
+import { useInterfaceStore } from "@/state/interface";
+import { useQueryClient } from "@tanstack/react-query";
+import { IScoutProfile } from "@/types/IScoutProfile";
 
 const Search: React.FC = () => {
+
+  const profile = useQueryClient().getQueryData(["profile", "scout"]) as { payload: IScoutProfile};
   // Get search state and actions from zustand store
-  const { search, setSearch, pageNumber, pageLimit, filter, sort } = useSearchStore();
+  const { search, setSearch, pageNumber, setPageNumber } = useSearchStore();
+  const { addAlert } = useInterfaceStore(state => state);
+  // Local input state for the search field (separate from the actual search query)
+  const [inputValue, setInputValue] = useState(search);
 
   // API hook for fetching athletes - reactive to key changes
   const { data, isLoading, isError, error } = useApiHook({
     method: "GET",
     url: `/profiles/athlete`,
-    key: ["athletes", search, pageNumber.toString(), pageLimit.toString(), filter, sort],
+    limit: 5,
+    key: ["athletes", search, pageNumber.toString()],
     enabled: true, // Always enabled, will refetch when key changes
     staleTime: 1000 * 60 * 2, // 2 minutes
   }) as any;
 
-  // Handle search input changes
+  const { mutate: favoriteAthlete } = useApiHook({
+    method: "POST",
+    key: ["favoriteAthlete"],
+    queriesToInvalidate: ["profile,scout"],
+  }) as any;
+  // Handle search input changes (just update local state, don't trigger API)
   const handleSearchChange = (value: string) => {
-    setSearch(value);
-    // The API will automatically refetch due to key change
+    setInputValue(value);
   };
 
-  // Handle search submission (Enter key or button click)
+  // Handle search submission (Enter key or button click) - this triggers the API
   const handleSearch = (value: string) => {
-    // Ensure the search state is updated if different
-    if (search !== value) {
-      setSearch(value);
-    }
-    // The API hook will handle the actual search via key reactivity
+    setSearch(value); // This will trigger API refetch via key change
+    setInputValue(value); // Keep input in sync
   };
 
   // Handle clear search
   const handleClearSearch = () => {
     setSearch("");
+    setInputValue("");
     // The API will automatically refetch with empty search
   };
 
@@ -54,9 +66,31 @@ const Search: React.FC = () => {
   };
 
   const handleToggleFavorite = (athlete: IAthlete) => {
-    console.log("Toggle favorite for:", athlete.fullName);
-    // TODO: Toggle favorite status
+    favoriteAthlete(
+      {
+        url: `/profiles/scout/favorite-athlete/${athlete._id}`,
+      },
+      {
+        onSuccess: () => {
+          console.log("Toggled favorite for:", athlete.fullName);
+          addAlert({
+            type: "success",
+            message: `Successfully toggled favorite for ${athlete.fullName}`,
+          });
+        },
+      }
+    );
   };
+
+  // Handle pagination
+  const handlePageChange = (page: number) => {
+    setPageNumber(page);
+    // The API will automatically refetch due to key change
+  };
+
+  // Calculate total pages from API response
+  const totalResults = data?.metadata?.totalCount || data?.payload?.length || 0;
+  const totalPages = data?.metadata?.totalPages || Math.ceil(totalResults / 5); // Assuming 5 results per page
 
   return (
     <div className={styles.searchContainer}>
@@ -71,7 +105,7 @@ const Search: React.FC = () => {
         {/* Primary Search Bar */}
         <div className={styles.searchBar}>
           <SearchComponent
-            value={search}
+            value={inputValue}
             placeholder="Search athletes by name, college, position..."
             size="large"
             fullWidth
@@ -83,40 +117,31 @@ const Search: React.FC = () => {
             onClear={handleClearSearch}
           />
         </div>
-
-        {/* Search Filters */}
-        <div className={styles.searchFilters}>
-          {/* TODO: Add filters component */}
-          <div className={styles.filtersPlaceholder}>
-            <p>Search filters will go here</p>
+        {/* Results Section */}
+        <section className={styles.resultsSection}>
+          {/* Results Header */}
+          <div className={styles.resultsHeader}>
+            <div className={styles.resultsInfo}>
+              {isLoading ? (
+                <p>Searching athletes...</p>
+              ) : isError ? (
+                <p className={styles.errorText}>Error loading results: {error?.message}</p>
+              ) : data?.payload ? (
+                <p>
+                  Found {totalResults} athletes
+                  {totalPages > 1 && (
+                    <span>
+                      {" "}
+                      • Page {pageNumber} of {totalPages}
+                    </span>
+                  )}
+                </p>
+              ) : (
+                <p>Enter a search term to find athletes</p>
+              )}
+            </div>
           </div>
-        </div>
-
-        {/* Search Actions */}
-        <div className={styles.searchActions}>
-          {/* TODO: Add search button and clear filters */}
-          <div className={styles.actionsPlaceholder}>
-            <p>Search actions (search button, clear filters) will go here</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Results Section */}
-      <section className={styles.resultsSection}>
-        {/* Results Header */}
-        <div className={styles.resultsHeader}>
-          <div className={styles.resultsInfo}>
-            {isLoading ? (
-              <p>Searching athletes...</p>
-            ) : isError ? (
-              <p className={styles.errorText}>Error loading results: {error?.message}</p>
-            ) : data?.payload ? (
-              <p>Found {data.payload.length} athletes</p>
-            ) : (
-              <p>Enter a search term to find athletes</p>
-            )}
-          </div>
-        </div>
+        </section>
 
         {/* Results Grid */}
         <div className={styles.resultsGrid}>
@@ -142,7 +167,9 @@ const Search: React.FC = () => {
                   onClick={handleAthleteClick}
                   onViewProfile={handleViewProfile}
                   onToggleFavorite={handleToggleFavorite}
-                  isFavorited={false} // TODO: Implement favorite tracking
+                  isFavorited={
+                    profile?.payload?.favoritedAthletes?.includes(athlete._id) || false
+                  }
                 />
               ))}
             </div>
@@ -160,10 +187,9 @@ const Search: React.FC = () => {
 
         {/* Pagination */}
         <div className={styles.pagination}>
-          {/* TODO: Add pagination component */}
-          <div className={styles.paginationPlaceholder}>
-            <p>Pagination controls will go here</p>
-          </div>
+          {totalPages > 1 && (
+            <Paginator currentPage={pageNumber} totalPages={totalPages} onPageChange={handlePageChange} />
+          )}
         </div>
       </section>
     </div>
