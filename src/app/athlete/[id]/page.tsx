@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import WorkInProgress from "@/components/workInProgress/WorkInProgress.component";
+import Athlete from "@/views/athlete/Athlete.view";
 
 export const metadata: Metadata = {
   title: "Athlete Details | FAP Scout",
@@ -13,11 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function AthleteDetailsPage() {
-  return (
-    <WorkInProgress
-      title="Athlete Details"
-      description="Your personalized athlete details view is coming soon! Easily access and manage athlete information."
-      icon="🏅"
-    />
-  );
+  return <Athlete />;
 }

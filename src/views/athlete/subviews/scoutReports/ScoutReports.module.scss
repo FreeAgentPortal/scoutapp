@@ -1,0 +1,597 @@
+@use "@/styles/globals.scss" as *;
+
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @include mobile {
+    padding: 1rem;
+  }
+}
+
+.loadingWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+
+  p {
+    color: var(--text-secondary, #666);
+    font-size: 1rem;
+  }
+}
+
+.errorWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  gap: 0.5rem;
+
+  p {
+    color: var(--error-color, #dc3545);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+.errorDetail {
+  color: var(--text-secondary, #ccc);
+  font-size: 0.9rem;
+}
+
+/* Header */
+.header {
+  margin-bottom: 2rem;
+  text-align: center;
+
+  @include mobile {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary-light, #b3e6fc);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary, #ccc);
+  margin: 0;
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.emptyTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary, white);
+  margin-bottom: 0.5rem;
+}
+
+.emptyDescription {
+  font-size: 1rem;
+  color: var(--text-secondary, #ccc);
+  margin-bottom: 2rem;
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.emptyActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.createReportButton {
+  background: var(--primary-color, #4ba7d6);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--primary-color-dark, #3a8bb8);
+    transform: translateY(-2px);
+  }
+}
+
+/* Reports List */
+.reportsList {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Report Card */
+.reportCard {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: var(--primary-color, #4ba7d6);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  @include mobile {
+    padding: 1.5rem;
+  }
+}
+
+/* Report Header */
+.reportHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  @include mobile {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+}
+
+.scoutInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.scoutProfile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.scoutAvatarPlaceholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary-color, #4ba7d6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.scoutAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-color, #4ba7d6);
+}
+
+.scoutDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.scoutName {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary, white);
+  margin: 0;
+}
+
+.scoutOrg {
+  font-size: 0.9rem;
+  color: var(--primary-light, #b3e6fc);
+  font-weight: 500;
+}
+
+.reportMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.reportType {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary-light, #b3e6fc);
+  background: rgba(75, 167, 214, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.reportDate {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #ccc);
+}
+
+.sportLeague {
+  font-size: 0.8rem;
+  color: var(--text-secondary, #999);
+  font-style: italic;
+}
+.overallRating {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+
+  @include mobile {
+    align-items: flex-start;
+  }
+}
+
+.ratingLabel {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #ccc);
+  font-weight: 500;
+}
+
+.ratingValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 8px;
+
+  &.excellent {
+    background: var(--success-color, #28a745);
+    color: white;
+  }
+
+  &.good {
+    background: var(--info-color, #17a2b8);
+    color: white;
+  }
+
+  &.average {
+    background: var(--warning-color, #ffc107);
+    color: black;
+  }
+
+  &.poor {
+    background: var(--error-color, #dc3545);
+    color: white;
+  }
+}
+
+/* Report Info Section */
+.reportInfo {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+}
+
+.statusBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.finalizedBadge {
+  background: var(--success-color, #28a745);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.draftBadge {
+  background: var(--warning-color, #ffc107);
+  color: black;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.publicBadge {
+  background: var(--info-color, #17a2b8);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.statusBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+
+  &.pending {
+    background: var(--warning-color, #ffc107);
+    color: black;
+  }
+
+  &.approved {
+    background: var(--success-color, #28a745);
+    color: white;
+  }
+
+  &.denied {
+    background: var(--error-color, #dc3545);
+    color: white;
+  }
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary, #ccc);
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Privacy Notice */
+.privacyNotice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.privacyIcon {
+  font-size: 1rem;
+}
+
+.privacyText {
+  font-size: 0.9rem;
+  color: var(--warning-color, #ffc107);
+  font-style: italic;
+}
+
+.ratingStars {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.star {
+  font-size: 1rem;
+  color: var(--neutral-400, #666);
+  transition: color 0.2s ease;
+
+  &.filled {
+    color: var(--warning-color, #ffc107);
+  }
+}
+
+/* Detailed Ratings */
+.detailedRatings {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+}
+
+.ratingsTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-light, #b3e6fc);
+  margin-bottom: 1rem;
+}
+
+.ratingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ratingItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ratingCategory {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #ccc);
+  font-weight: 500;
+}
+
+.ratingDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ratingNumber {
+  font-size: 0.875rem;
+  color: var(--text-primary, white);
+  font-weight: 600;
+}
+
+/* Report Sections */
+.reportSection {
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-light, #b3e6fc);
+  margin-bottom: 0.75rem;
+}
+
+.summaryText,
+.recommendationsText,
+.notesText {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-primary, white);
+  margin: 0;
+}
+
+/* Strengths and Weaknesses */
+.strengthsWeaknesses {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.strengthsSection,
+.weaknessesSection {
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.strengthsSection {
+  background: rgba(40, 167, 69, 0.1);
+  border-left: 4px solid var(--success-color, #28a745);
+}
+
+.weaknessesSection {
+  background: rgba(220, 53, 69, 0.1);
+  border-left: 4px solid var(--error-color, #dc3545);
+}
+
+.strengthsList,
+.weaknessesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.strengthItem,
+.weaknessItem {
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary, white);
+}
+
+.strengthItem {
+  border-left: 3px solid var(--success-color, #28a745);
+}
+
+.weaknessItem {
+  border-left: 3px solid var(--error-color, #dc3545);
+}
+
+/* Additional Info */
+.additionalInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.gameReadyBadge {
+  background: var(--success-color, #28a745);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.projectedLevel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.projectedLabel {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #ccc);
+  font-weight: 500;
+}
+
+.projectedValue {
+  background: var(--primary-color, #4ba7d6);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Report Footer */
+.reportFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8rem;
+  color: var(--text-secondary, #999);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  @include mobile {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+}
+
+.reportId,
+.createdDate,
+.updatedDate {
+  font-family: monospace;
+}
