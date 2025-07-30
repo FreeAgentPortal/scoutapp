@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import styles from "./ScoutReports.module.scss";
 import { IAthlete } from "@/types/IAthlete";
 import useApiHook from "@/hooks/useApi";
@@ -17,7 +18,7 @@ const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
   const { data, isLoading, isError, error } = useApiHook({
     method: "GET",
     url: `/scout`,
-    filter: `athleteid;${athleteId}|isFinalized;true`,
+    filter: `athleteId;${athleteId}|isFinalized;true`,
     key: ["scout-reports", athleteId],
     enabled: !!athleteId,
   }) as any;
@@ -45,14 +46,33 @@ const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
   // If no reports found, show empty state
   if (!reports || reports.length === 0) {
     return (
-      <div className={styles.emptyState}>
-        <div className={styles.emptyIcon}>📊</div>
-        <h3 className={styles.emptyTitle}>No Scout Reports Yet</h3>
-        <p className={styles.emptyDescription}>
-          This athlete hasn't been evaluated by any scouts yet. Scout reports will appear here once they're submitted.
-        </p>
-        <div className={styles.emptyActions}>
-          <button className={styles.createReportButton}>Create First Report</button>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <div className={styles.headerContent}>
+            <div className={styles.headerText}>
+              <h2 className={styles.title}>Scout Reports (0)</h2>
+              <p className={styles.subtitle}>Professional evaluations and assessments for {athlete?.fullName}</p>
+            </div>
+            <div className={styles.headerActions}>
+              <Link href={`/athlete/${athleteId}/report-new`} className={styles.createReportButton}>
+                <span className={styles.buttonIcon}>📝</span>
+                Create New Report
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className={styles.emptyState}>
+          <div className={styles.emptyIcon}>📊</div>
+          <h3 className={styles.emptyTitle}>No Scout Reports Yet</h3>
+          <p className={styles.emptyDescription}>
+            This athlete hasn&apos;t been evaluated by any scouts yet. Scout reports will appear here once they&apos;re submitted.
+          </p>
+          <div className={styles.emptyActions}>
+            <Link href={`/athlete/${athleteId}/report-new`} className={styles.createReportButtonLarge}>
+              <span className={styles.buttonIcon}>📝</span>
+              Create First Report
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -96,8 +116,18 @@ const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Scout Reports ({reports.length})</h2>
-        <p className={styles.subtitle}>Professional evaluations and assessments for {athlete?.fullName}</p>
+        <div className={styles.headerContent}>
+          <div className={styles.headerText}>
+            <h2 className={styles.title}>Scout Reports ({reports.length})</h2>
+            <p className={styles.subtitle}>Professional evaluations and assessments for {athlete?.fullName}</p>
+          </div>
+          <div className={styles.headerActions}>
+            <Link href={`/athlete/${athleteId}/report-new`} className={styles.createReportButton}>
+              <span className={styles.buttonIcon}>📝</span>
+              Create New Report
+            </Link>
+          </div>
+        </div>
       </div>
 
       <div className={styles.reportsList}>

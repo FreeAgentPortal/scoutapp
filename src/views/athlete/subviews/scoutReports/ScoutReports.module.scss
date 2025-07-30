@@ -48,11 +48,33 @@
 /* Header */
 .header {
   margin-bottom: 2rem;
-  text-align: center;
 
   @include mobile {
     margin-bottom: 1.5rem;
   }
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+
+  @include mobile {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+}
+
+.headerText {
+  flex: 1;
+}
+
+.headerActions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .title {
@@ -68,7 +90,59 @@
   margin: 0;
 }
 
-/* Empty State */
+/* Create Report Buttons */
+.createReportButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-color, #4ba7d6);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-size: 0.9rem;
+
+  &:hover {
+    background: var(--primary-color-dark, #3a8bb8);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(75, 167, 214, 0.3);
+  }
+
+  @include mobile {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+.createReportButtonLarge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--primary-color, #4ba7d6);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-size: 1rem;
+
+  &:hover {
+    background: var(--primary-color-dark, #3a8bb8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(75, 167, 214, 0.4);
+  }
+}
+
+.buttonIcon {
+  font-size: 1rem;
+} /* Empty State */
 .emptyState {
   display: flex;
   flex-direction: column;
@@ -105,25 +179,8 @@
 .emptyActions {
   display: flex;
   gap: 1rem;
-}
-
-.createReportButton {
-  background: var(--primary-color, #4ba7d6);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: var(--primary-color-dark, #3a8bb8);
-    transform: translateY(-2px);
-  }
-}
-
-/* Reports List */
+  justify-content: center;
+} /* Reports List */
 .reportsList {
   display: flex;
   flex-direction: column;
