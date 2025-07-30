@@ -1,0 +1,210 @@
+@use "@/styles/globals.scss" as *;
+
+/* Header Section */
+.searchHeader {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary, #ffffff);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--secondary, #666);
+  margin: 0;
+}
+
+/* Search Interface */
+.searchInterface {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--secondary);
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.searchFilters {
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 2px dashed var(--border-color, #ddd);
+}
+
+.filtersPlaceholder {
+  text-align: center;
+  color: var(--text-secondary, #666);
+  padding: 1rem;
+}
+
+.searchActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 2px dashed var(--border-color, #ddd);
+}
+
+.actionsPlaceholder {
+  text-align: center;
+  color: var(--text-secondary, #666);
+  width: 100%;
+}
+
+/* Results Section */
+.resultsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.resultsHeader {
+  display: flex;
+  justify-content: between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--background-secondary, #f8f9fa);
+  border-radius: 8px;
+  border: 2px dashed var(--border-color, #ddd);
+}
+
+.resultsInfo {
+  text-align: center;
+  color: var(--text-secondary, #666);
+  width: 100%;
+}
+
+.resultsGrid {
+  min-height: 400px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Results States */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-secondary, #666);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--secondary);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--error-color, #dc3545);
+  text-align: center;
+}
+
+.errorText {
+  color: var(--error);
+  font-weight: var(--font-weight-medium);
+}
+
+.errorDetails {
+  font-size: var(--font-size-sm);
+  color: var(--secondary-dark);
+}
+
+.emptyState,
+.welcomeState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary, #666);
+  text-align: center;
+}
+
+/* Athlete Grid */
+.athleteGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  align-items: stretch;
+
+  @include tablet {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  @include mobile {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+.pagination {
+  padding: 1rem;
+  background: var(--background-secondary, #f8f9fa);
+  border-radius: 8px;
+  border: 2px dashed var(--border-color, #ddd);
+}
+
+.paginationPlaceholder {
+  text-align: center;
+  color: var(--text-secondary, #666);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .searchContainer {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .searchInterface {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .searchBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

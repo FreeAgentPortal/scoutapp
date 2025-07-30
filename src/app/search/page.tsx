@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import WorkInProgress from "@/components/workInProgress/WorkInProgress.component";
+import Search from "@/views/search/Search.view";
 
 export const metadata: Metadata = {
   title: "Search Athletes | FAP Scout",
@@ -13,11 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function SearchPage() {
-  return (
-    <WorkInProgress
-      title="Athlete Search"
-      description="Our advanced athlete search and discovery system is coming soon! You'll be able to filter by sport, position, location, and performance metrics."
-      icon="🔍"
-    />
-  );
+  return <Search />;
 }
