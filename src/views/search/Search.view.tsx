@@ -175,7 +175,7 @@ const Search: React.FC = () => {
             </div>
           ) : search ? (
             <div className={styles.emptyState}>
-              <p>No athletes found for "{search}"</p>
+              <p>No athletes found for &quot;{search}&quot;</p>
               <p>Try adjusting your search terms</p>
             </div>
           ) : (
