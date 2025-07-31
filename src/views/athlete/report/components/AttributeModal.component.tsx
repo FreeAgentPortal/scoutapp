@@ -117,7 +117,7 @@ const AttributeModal: React.FC<AttributeModalProps> = ({ isOpen, onClose, onAdd,
                     type="number"
                     min="1"
                     max="5"
-                    step="0.1"
+                    step="0.5"
                     {...register("score", {
                       required: "Score is required",
                       min: { value: 1, message: "Minimum score is 1" },

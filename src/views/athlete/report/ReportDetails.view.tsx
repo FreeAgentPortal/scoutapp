@@ -9,11 +9,14 @@ import { IScoutReport } from "@/types/IScoutReport";
 import Loader from "@/components/loader/Loader.component";
 import Link from "next/link";
 import ReportForm from "./components/ReportForm.component";
+import { IScoutProfile } from "@/types/IScoutProfile";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ReportDetails = () => {
   const params = useParams();
   const router = useRouter();
   const athleteId = params?.id as string;
+  const scoutProfile = useQueryClient().getQueryData(["profile", "scout"]) as { payload: IScoutProfile };
 
   // Fetch athlete data to display athlete info
   const { data, isLoading, isError, error } = useApiHook({
@@ -23,29 +26,23 @@ const ReportDetails = () => {
     enabled: !!athleteId,
   }) as any;
 
+  const { mutate: createReport } = useApiHook({
+    method: "POST",
+    key: ["createReport"],
+    queriesToInvalidate: ["athlete", athleteId],
+  }) as any;
+
   const athlete = data?.payload as IAthlete;
 
   const handleFormSubmit = async (formData: Partial<IScoutReport>) => {
-    try {
-      // Submit the report using your API
-      const response = await fetch("/api/scout-reports", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        // Redirect back to athlete profile on success
-        router.push(`/athlete/${athleteId}`);
-      } else {
-        // Handle error
-        console.error("Failed to submit report");
+    createReport({
+      url: `/scout`,
+      formData: {
+        ...formData,
+        athleteId: athlete._id,
+        scoutId: scoutProfile?.payload?._id,
       }
-    } catch (error) {
-      console.error("Error submitting report:", error);
-    }
+    })
   };
 
   const handleFormCancel = () => {

@@ -1,5 +1,5 @@
 export interface IScoutProfile {
-  id: string;
+  _id: string;
   userId: string;
   displayName?: string; // Full name of the scout
   contactNumber?: string; // Contact number of the scout

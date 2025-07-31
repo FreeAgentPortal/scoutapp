@@ -65,7 +65,8 @@ const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
           <div className={styles.emptyIcon}>📊</div>
           <h3 className={styles.emptyTitle}>No Scout Reports Yet</h3>
           <p className={styles.emptyDescription}>
-            This athlete hasn&apos;t been evaluated by any scouts yet. Scout reports will appear here once they&apos;re submitted.
+            This athlete hasn&apos;t been evaluated by any scouts yet. Scout reports will appear here once they&apos;re
+            submitted.
           </p>
           <div className={styles.emptyActions}>
             <Link href={`/athlete/${athleteId}/report-new`} className={styles.createReportButtonLarge}>

@@ -462,7 +462,9 @@ const ReportForm: React.FC<ReportFormProps> = ({ athleteId, athlete, onSubmit, o
 
         {athlete?.metrics && Object.keys(athlete.metrics).length > 0 ? (
           <div>
-            <h4 style={{ marginBottom: "1rem", fontSize: "1rem", fontWeight: "600" }}>Athlete&apos;s Claimed Metrics</h4>
+            <h4 style={{ marginBottom: "1rem", fontSize: "1rem", fontWeight: "600" }}>
+              Athlete&apos;s Claimed Metrics
+            </h4>
             <div
               style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "0.75rem" }}
             >
@@ -726,8 +728,8 @@ const ReportForm: React.FC<ReportFormProps> = ({ athleteId, athlete, onSubmit, o
                 paddingLeft: "1.75rem",
               }}
             >
-              Draft reports won&apos;t affect the player&apos;s overall rating until finalized. Uncheck when you&apos;re ready to
-              submit.
+              Draft reports won&apos;t affect the player&apos;s overall rating until finalized. Uncheck when you&apos;re
+              ready to submit.
             </div>
           </div>
 
