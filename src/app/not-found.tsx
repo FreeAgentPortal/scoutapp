@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import styles from "./not-found.module.scss";
+import Link from "next/link";
 
 export default function NotFound() {
   const router = useRouter();
@@ -49,7 +50,8 @@ export default function NotFound() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          Looks like this play didn&apos;t work out! The page you&apos;re looking for doesn&apos;t exist or has been moved.
+          Looks like this play didn&apos;t work out! The page you&apos;re looking for doesn&apos;t exist or has been
+          moved.
         </motion.p>
 
         <motion.div
@@ -86,24 +88,24 @@ export default function NotFound() {
           <h3 className={styles.suggestionsTitle}>Try these instead:</h3>
           <ul className={styles.suggestionsList}>
             <li>
-              <a href="/search" className={styles.suggestionLink}>
+              <Link href="/search" className={styles.suggestionLink}>
                 Search Athletes
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/reports" className={styles.suggestionLink}>
+              <Link href="/reports" className={styles.suggestionLink}>
                 My Reports
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/favorites" className={styles.suggestionLink}>
+              <Link href="/favorites" className={styles.suggestionLink}>
                 Favorites
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/settings" className={styles.suggestionLink}>
+              <Link href="/settings" className={styles.suggestionLink}>
                 Settings
-              </a>
+              </Link>
             </li>
           </ul>
         </motion.div>

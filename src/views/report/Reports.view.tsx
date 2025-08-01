@@ -196,10 +196,7 @@ const Reports = () => {
                   </td>
                   <td className={styles.date}>{formatDate(report.createdAt)}</td>
                   <td className={styles.actions}>
-                    <button 
-                      className={styles.actionButton}
-                      onClick={() => handleEditReport(report)}
-                    >
+                    <button className={styles.actionButton} onClick={() => handleEditReport(report)}>
                       Edit
                     </button>
                   </td>

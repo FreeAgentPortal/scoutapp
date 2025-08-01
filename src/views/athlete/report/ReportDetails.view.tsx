@@ -18,7 +18,7 @@ const ReportDetails = () => {
   const athleteId = params?.id as string;
   const reportId = params?.reportId as string; // For edit mode
   const isEditMode = !!reportId;
-  
+
   const scoutProfile = useQueryClient().getQueryData(["profile", "scout"]) as { payload: IScoutProfile };
 
   // Fetch athlete data to display athlete info
@@ -30,7 +30,11 @@ const ReportDetails = () => {
   }) as any;
 
   // Fetch existing report data when in edit mode
-  const { data: reportData, isLoading: isReportLoading, isError: isReportError } = useApiHook({
+  const {
+    data: reportData,
+    isLoading: isReportLoading,
+    isError: isReportError,
+  } = useApiHook({
     method: "GET",
     url: `/scout/${reportId}`,
     key: ["report", reportId],
@@ -61,7 +65,7 @@ const ReportDetails = () => {
           ...formData,
           athleteId: athlete._id,
           scoutId: scoutProfile?.payload?._id,
-        }
+        },
       });
     } else {
       // Create new report
@@ -71,7 +75,7 @@ const ReportDetails = () => {
           ...formData,
           athleteId: athlete._id,
           scoutId: scoutProfile?.payload?._id,
-        }
+        },
       });
     }
   };
@@ -85,7 +89,7 @@ const ReportDetails = () => {
       <div className={styles.container}>
         <div className={styles.loadingWrapper}>
           <Loader />
-          <p>Loading {isEditMode ? 'report and athlete' : 'athlete'} information...</p>
+          <p>Loading {isEditMode ? "report and athlete" : "athlete"} information...</p>
         </div>
       </div>
     );
@@ -95,8 +99,8 @@ const ReportDetails = () => {
     return (
       <div className={styles.container}>
         <div className={styles.errorWrapper}>
-          <h2>Error Loading {isEditMode ? 'Report' : 'Athlete'}</h2>
-          <p>{error?.message || `Failed to load ${isEditMode ? 'report' : 'athlete'} data`}</p>
+          <h2>Error Loading {isEditMode ? "Report" : "Athlete"}</h2>
+          <p>{error?.message || `Failed to load ${isEditMode ? "report" : "athlete"} data`}</p>
           <div className={styles.errorActions}>
             <Link href={`/athlete/${athleteId}`} className={styles.backButton}>
               Back to Athlete Profile
@@ -120,7 +124,7 @@ const ReportDetails = () => {
             {athlete.fullName}
           </Link>
           <span className={styles.breadcrumbSeparator}>›</span>
-          <span className={styles.breadcrumbCurrent}>{isEditMode ? 'Edit Report' : 'New Report'}</span>
+          <span className={styles.breadcrumbCurrent}>{isEditMode ? "Edit Report" : "New Report"}</span>
         </div>
 
         <div className={styles.athleteHeader}>
@@ -158,19 +162,19 @@ const ReportDetails = () => {
       <div className={styles.content}>
         <div className={styles.reportFormContainer}>
           <div className={styles.formHeader}>
-            <h2 className={styles.formTitle}>{isEditMode ? 'Edit Scout Report' : 'Create Scout Report'}</h2>
+            <h2 className={styles.formTitle}>{isEditMode ? "Edit Scout Report" : "Create Scout Report"}</h2>
             <p className={styles.formSubtitle}>
-              {isEditMode ? 'Update your evaluation for' : 'Generate a professional evaluation for'} {athlete.fullName}
+              {isEditMode ? "Update your evaluation for" : "Generate a professional evaluation for"} {athlete.fullName}
             </p>
           </div>
 
           {/* Report Form Component */}
-          <ReportForm 
-            athleteId={athleteId} 
-            athlete={athlete} 
+          <ReportForm
+            athleteId={athleteId}
+            athlete={athlete}
             existingReport={existingReport}
-            onSubmit={handleFormSubmit} 
-            onCancel={handleFormCancel} 
+            onSubmit={handleFormSubmit}
+            onCancel={handleFormCancel}
           />
         </div>
 

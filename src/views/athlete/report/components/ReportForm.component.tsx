@@ -33,7 +33,14 @@ type FormData = {
   isDraft: boolean;
 };
 
-const ReportForm: React.FC<ReportFormProps> = ({ athleteId, athlete, existingReport, onSubmit, onCancel, isSubmitting = false }) => {
+const ReportForm: React.FC<ReportFormProps> = ({
+  athleteId,
+  athlete,
+  existingReport,
+  onSubmit,
+  onCancel,
+  isSubmitting = false,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newStrength, setNewStrength] = useState("");
   const [newWeakness, setNewWeakness] = useState("");
@@ -46,31 +53,33 @@ const ReportForm: React.FC<ReportFormProps> = ({ athleteId, athlete, existingRep
     watch,
     setValue,
   } = useForm<FormData>({
-    defaultValues: existingReport ? {
-      sport: existingReport.sport || "American Football",
-      league: existingReport.league || "National Football League (NFL)",
-      reportType: existingReport.reportType || "evaluation",
-      ratingBreakdown: existingReport.ratingBreakdown || {},
-      observations: existingReport.observations || "",
-      strengths: existingReport.strengths || [],
-      weaknesses: existingReport.weaknesses || [],
-      verifiedMetrics: existingReport.verifiedMetrics || [],
-      tags: existingReport.tags || [],
-      isPublic: existingReport.isPublic ?? false,
-      isDraft: existingReport.isDraft ?? true,
-    } : {
-      sport: "American Football",
-      league: "National Football League (NFL)",
-      reportType: "evaluation",
-      ratingBreakdown: {},
-      observations: "",
-      strengths: [],
-      weaknesses: [],
-      verifiedMetrics: [],
-      tags: [],
-      isPublic: false, // Default to private for privacy
-      isDraft: true, // Default to draft until scout is ready
-    },
+    defaultValues: existingReport
+      ? {
+          sport: existingReport.sport || "American Football",
+          league: existingReport.league || "National Football League (NFL)",
+          reportType: existingReport.reportType || "evaluation",
+          ratingBreakdown: existingReport.ratingBreakdown || {},
+          observations: existingReport.observations || "",
+          strengths: existingReport.strengths || [],
+          weaknesses: existingReport.weaknesses || [],
+          verifiedMetrics: existingReport.verifiedMetrics || [],
+          tags: existingReport.tags || [],
+          isPublic: existingReport.isPublic ?? false,
+          isDraft: existingReport.isDraft ?? true,
+        }
+      : {
+          sport: "American Football",
+          league: "National Football League (NFL)",
+          reportType: "evaluation",
+          ratingBreakdown: {},
+          observations: "",
+          strengths: [],
+          weaknesses: [],
+          verifiedMetrics: [],
+          tags: [],
+          isPublic: false, // Default to private for privacy
+          isDraft: true, // Default to draft until scout is ready
+        },
   });
 
   // Watch the current ratings to track what's been added
@@ -789,10 +798,13 @@ const ReportForm: React.FC<ReportFormProps> = ({ athleteId, athlete, existingRep
           Cancel
         </button>
         <button type="submit" className={formStyles.submit} disabled={isSubmitting}>
-          {isSubmitting 
-            ? (existingReport ? "Updating..." : "Submitting...") 
-            : (existingReport ? "Update Report" : "Submit Report")
-          }
+          {isSubmitting
+            ? existingReport
+              ? "Updating..."
+              : "Submitting..."
+            : existingReport
+            ? "Update Report"
+            : "Submit Report"}
         </button>
       </div>
     </form>
