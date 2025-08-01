@@ -1,3 +1,4 @@
+import { IAthlete } from "./IAthlete";
 import { IScoutProfile } from "./IScoutProfile";
 
 export interface IRatingField {
@@ -31,7 +32,7 @@ export interface IScoutReport {
   // actionable fields
   status?: "pending" | "approved" | "denied"; // current status of the report
   message?: string; // message from admin on approval/denial
-
+  athlete?: IAthlete;
   // timestamps
   createdAt: Date;
   updatedAt: Date;

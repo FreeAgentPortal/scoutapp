@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import WorkInProgress from "@/components/workInProgress/WorkInProgress.component";
+import Reports from "@/views/report/Reports.view";
 
 export const metadata: Metadata = {
   title: "My Reports | FAP Scout",
@@ -13,11 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function ReportsPage() {
-  return (
-    <WorkInProgress
-      title="Scout Reports"
-      description="Your personalized reporting dashboard is being developed! Soon you'll be able to create, edit, and share detailed athlete evaluations."
-      icon="📊"
-    />
-  );
+  return <Reports />;
 }

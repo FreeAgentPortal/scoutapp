@@ -13,6 +13,7 @@ import AttributeCard from "./AttributeCard.component";
 interface ReportFormProps {
   athleteId: string;
   athlete?: IAthlete; // Optional for now to avoid breaking changes
+  existingReport?: IScoutReport; // For edit mode
   onSubmit: (formData: Partial<IScoutReport>) => void;
   onCancel: () => void;
   isSubmitting?: boolean;
@@ -32,7 +33,7 @@ type FormData = {
   isDraft: boolean;
 };
 
-const ReportForm: React.FC<ReportFormProps> = ({ athleteId, athlete, onSubmit, onCancel, isSubmitting = false }) => {
+const ReportForm: React.FC<ReportFormProps> = ({ athleteId, athlete, existingReport, onSubmit, onCancel, isSubmitting = false }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newStrength, setNewStrength] = useState("");
   const [newWeakness, setNewWeakness] = useState("");
@@ -45,7 +46,19 @@ const ReportForm: React.FC<ReportFormProps> = ({ athleteId, athlete, onSubmit, o
     watch,
     setValue,
   } = useForm<FormData>({
-    defaultValues: {
+    defaultValues: existingReport ? {
+      sport: existingReport.sport || "American Football",
+      league: existingReport.league || "National Football League (NFL)",
+      reportType: existingReport.reportType || "evaluation",
+      ratingBreakdown: existingReport.ratingBreakdown || {},
+      observations: existingReport.observations || "",
+      strengths: existingReport.strengths || [],
+      weaknesses: existingReport.weaknesses || [],
+      verifiedMetrics: existingReport.verifiedMetrics || [],
+      tags: existingReport.tags || [],
+      isPublic: existingReport.isPublic ?? false,
+      isDraft: existingReport.isDraft ?? true,
+    } : {
       sport: "American Football",
       league: "National Football League (NFL)",
       reportType: "evaluation",
@@ -776,7 +789,10 @@ const ReportForm: React.FC<ReportFormProps> = ({ athleteId, athlete, onSubmit, o
           Cancel
         </button>
         <button type="submit" className={formStyles.submit} disabled={isSubmitting}>
-          {isSubmitting ? "Submitting..." : "Submit Report"}
+          {isSubmitting 
+            ? (existingReport ? "Updating..." : "Submitting...") 
+            : (existingReport ? "Update Report" : "Submit Report")
+          }
         </button>
       </div>
     </form>

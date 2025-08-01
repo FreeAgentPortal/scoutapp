@@ -16,6 +16,9 @@ const ReportDetails = () => {
   const params = useParams();
   const router = useRouter();
   const athleteId = params?.id as string;
+  const reportId = params?.reportId as string; // For edit mode
+  const isEditMode = !!reportId;
+  
   const scoutProfile = useQueryClient().getQueryData(["profile", "scout"]) as { payload: IScoutProfile };
 
   // Fetch athlete data to display athlete info
@@ -26,46 +29,74 @@ const ReportDetails = () => {
     enabled: !!athleteId,
   }) as any;
 
+  // Fetch existing report data when in edit mode
+  const { data: reportData, isLoading: isReportLoading, isError: isReportError } = useApiHook({
+    method: "GET",
+    url: `/scout/${reportId}`,
+    key: ["report", reportId],
+    enabled: !!reportId && isEditMode,
+  }) as any;
+
   const { mutate: createReport } = useApiHook({
     method: "POST",
     key: ["createReport"],
     queriesToInvalidate: ["athlete", athleteId],
   }) as any;
 
+  const { mutate: updateReport } = useApiHook({
+    method: "PUT",
+    key: ["updateReport"],
+    queriesToInvalidate: ["athlete", athleteId, "report", reportId, "reports"],
+  }) as any;
+
   const athlete = data?.payload as IAthlete;
+  const existingReport = reportData?.payload as IScoutReport;
 
   const handleFormSubmit = async (formData: Partial<IScoutReport>) => {
-    createReport({
-      url: `/scout`,
-      formData: {
-        ...formData,
-        athleteId: athlete._id,
-        scoutId: scoutProfile?.payload?._id,
-      }
-    })
+    if (isEditMode && existingReport) {
+      // Update existing report
+      updateReport({
+        url: `/scout/${reportId}`,
+        formData: {
+          ...formData,
+          athleteId: athlete._id,
+          scoutId: scoutProfile?.payload?._id,
+        }
+      });
+    } else {
+      // Create new report
+      createReport({
+        url: `/scout`,
+        formData: {
+          ...formData,
+          athleteId: athlete._id,
+          scoutId: scoutProfile?.payload?._id,
+        }
+      });
+    }
   };
 
   const handleFormCancel = () => {
     router.push(`/athlete/${athleteId}`);
   };
 
-  if (isLoading) {
+  if (isLoading || (isEditMode && isReportLoading)) {
     return (
       <div className={styles.container}>
         <div className={styles.loadingWrapper}>
           <Loader />
-          <p>Loading athlete information...</p>
+          <p>Loading {isEditMode ? 'report and athlete' : 'athlete'} information...</p>
         </div>
       </div>
     );
   }
 
-  if (isError || !athlete) {
+  if (isError || !athlete || (isEditMode && (isReportError || !existingReport))) {
     return (
       <div className={styles.container}>
         <div className={styles.errorWrapper}>
-          <h2>Error Loading Athlete</h2>
-          <p>{error?.message || "Failed to load athlete data"}</p>
+          <h2>Error Loading {isEditMode ? 'Report' : 'Athlete'}</h2>
+          <p>{error?.message || `Failed to load ${isEditMode ? 'report' : 'athlete'} data`}</p>
           <div className={styles.errorActions}>
             <Link href={`/athlete/${athleteId}`} className={styles.backButton}>
               Back to Athlete Profile
@@ -89,7 +120,7 @@ const ReportDetails = () => {
             {athlete.fullName}
           </Link>
           <span className={styles.breadcrumbSeparator}>›</span>
-          <span className={styles.breadcrumbCurrent}>New Report</span>
+          <span className={styles.breadcrumbCurrent}>{isEditMode ? 'Edit Report' : 'New Report'}</span>
         </div>
 
         <div className={styles.athleteHeader}>
@@ -127,12 +158,20 @@ const ReportDetails = () => {
       <div className={styles.content}>
         <div className={styles.reportFormContainer}>
           <div className={styles.formHeader}>
-            <h2 className={styles.formTitle}>Create Scout Report</h2>
-            <p className={styles.formSubtitle}>Generate a professional evaluation for {athlete.fullName}</p>
+            <h2 className={styles.formTitle}>{isEditMode ? 'Edit Scout Report' : 'Create Scout Report'}</h2>
+            <p className={styles.formSubtitle}>
+              {isEditMode ? 'Update your evaluation for' : 'Generate a professional evaluation for'} {athlete.fullName}
+            </p>
           </div>
 
           {/* Report Form Component */}
-          <ReportForm athleteId={athleteId} athlete={athlete} onSubmit={handleFormSubmit} onCancel={handleFormCancel} />
+          <ReportForm 
+            athleteId={athleteId} 
+            athlete={athlete} 
+            existingReport={existingReport}
+            onSubmit={handleFormSubmit} 
+            onCancel={handleFormCancel} 
+          />
         </div>
 
         {/* Sidebar with helpful information */}
