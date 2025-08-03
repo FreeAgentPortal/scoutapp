@@ -288,16 +288,18 @@
 
 /* Mobile responsive styles for input-button rows */
 @media (max-width: 768px) {
-  :global(.input-button-row) {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0.75rem !important;
-  }
+  :global() {
+    .input-button-row {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 0.75rem !important;
+    }
 
-  :global(.add-button) {
-    width: 100% !important;
-    min-width: unset !important;
-    margin-top: 0 !important;
+    .add-button {
+      width: 100% !important;
+      min-width: unset !important;
+      margin-top: 0 !important;
+    }
   }
 
   /* Better spacing for form sections on mobile */
