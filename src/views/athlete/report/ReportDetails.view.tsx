@@ -19,9 +19,7 @@ const ReportDetails = () => {
   const reportId = params?.reportId as string; // For edit mode
   const isEditMode = !!reportId;
 
-  const scoutProfile = useQueryClient().getQueryData(["profile", "scout"]) as { payload: IScoutProfile };
-
-  // Fetch athlete data to display athlete info
+  const scoutProfile = useQueryClient().getQueryData(["profile", "scout"]) as { payload: IScoutProfile }; // Fetch athlete data to display athlete info
   const { data, isLoading, isError, error } = useApiHook({
     method: "GET",
     url: `/profiles/athlete/${athleteId}`,
@@ -41,16 +39,26 @@ const ReportDetails = () => {
     enabled: !!reportId && isEditMode,
   }) as any;
 
-  const { mutate: createReport } = useApiHook({
+  const { mutate: createReport, isPending: isCreating } = useApiHook({
     method: "POST",
     key: ["createReport"],
-    queriesToInvalidate: ["athlete", athleteId],
+    successMessage: "Report created successfully",
+    queriesToInvalidate: [`athlete,${athleteId}`, `scout-reports,${athleteId}`],
+    onSuccessCallback: () => {
+      // Navigate back to athlete profile after successful creation
+      router.push(`/athlete/${athleteId}`);
+    },
   }) as any;
 
-  const { mutate: updateReport } = useApiHook({
+  const { mutate: updateReport, isPending: isUpdating } = useApiHook({
     method: "PUT",
     key: ["updateReport"],
-    queriesToInvalidate: ["athlete", athleteId, "report", reportId, "reports"],
+    successMessage: `Report updated successfully`,
+    queriesToInvalidate: [`athlete,${athleteId}`, `report,${reportId}`, `reports`],
+    onSuccessCallback: () => {
+      // Navigate back to reports list after successful update
+      router.push("/reports");
+    },
   }) as any;
 
   const athlete = data?.payload as IAthlete;
@@ -81,7 +89,13 @@ const ReportDetails = () => {
   };
 
   const handleFormCancel = () => {
-    router.push(`/athlete/${athleteId}`);
+    if (isEditMode) {
+      // When editing, go back to reports list
+      router.push("/reports");
+    } else {
+      // When creating, go back to athlete profile
+      router.push(`/athlete/${athleteId}`);
+    }
   };
 
   if (isLoading || (isEditMode && isReportLoading)) {
@@ -113,6 +127,19 @@ const ReportDetails = () => {
 
   return (
     <div className={styles.container}>
+      {/* Loading overlay during form submission */}
+      {(isCreating || isUpdating) && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingModal}>
+            <Loader />
+            <p>{isEditMode ? "Updating report..." : "Creating report..."}</p>
+            <p className={styles.loadingSubtext}>
+              {isEditMode ? "Your changes are being saved" : "Please wait while we save your evaluation"}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Header with athlete info and navigation */}
       <div className={styles.header}>
         <div className={styles.breadcrumb}>
@@ -160,11 +187,29 @@ const ReportDetails = () => {
 
       {/* Main content area */}
       <div className={styles.content}>
-        <div className={styles.reportFormContainer}>
+        <div className={`${styles.reportFormContainer} ${isCreating || isUpdating ? styles.submitting : ""}`}>
           <div className={styles.formHeader}>
-            <h2 className={styles.formTitle}>{isEditMode ? "Edit Scout Report" : "Create Scout Report"}</h2>
+            <h2 className={styles.formTitle}>
+              {isEditMode ? "Edit Scout Report" : "Create Scout Report"}
+              {isEditMode && existingReport?.isFinalized && (
+                <span
+                  style={{
+                    marginLeft: "0.5rem",
+                    fontSize: "0.875rem",
+                    color: "var(--color-warning, #ffc107)",
+                    fontWeight: "normal",
+                  }}
+                >
+                  🔒 Finalized
+                </span>
+              )}
+            </h2>
             <p className={styles.formSubtitle}>
-              {isEditMode ? "Update your evaluation for" : "Generate a professional evaluation for"} {athlete.fullName}
+              {isEditMode
+                ? existingReport?.isFinalized
+                  ? `This report has been finalized. Only observations, strengths, weaknesses, and settings can be modified for ${athlete.fullName}.`
+                  : `Update your evaluation for ${athlete.fullName}. You can modify all sections until the report is finalized by an administrator.`
+                : `Generate a professional evaluation for ${athlete.fullName}`}
             </p>
           </div>
 
@@ -175,6 +220,7 @@ const ReportDetails = () => {
             existingReport={existingReport}
             onSubmit={handleFormSubmit}
             onCancel={handleFormCancel}
+            isSubmitting={isCreating || isUpdating}
           />
         </div>
 

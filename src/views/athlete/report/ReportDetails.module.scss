@@ -27,6 +27,49 @@
   }
 }
 
+/* Loading overlay for form submission */
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.loadingModal {
+  background: var(--background-secondary, #1a1a1a);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  p {
+    color: var(--text-primary, white);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .loadingSubtext {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #ccc);
+    font-weight: 400;
+    margin-top: 0.5rem;
+  }
+}
+
 .errorWrapper {
   display: flex;
   flex-direction: column;
@@ -195,9 +238,15 @@
   border-radius: 16px;
   padding: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: opacity 0.2s ease;
 
   @include mobile {
     padding: 1.5rem;
+  }
+
+  &.submitting {
+    opacity: 0.6;
+    pointer-events: none;
   }
 }
 
@@ -458,4 +507,12 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 300px;
+}
+
+/* Read-only variant of attribute card */
+.attributeCard.readOnly {
+  opacity: 0.8;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }

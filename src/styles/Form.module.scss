@@ -104,7 +104,7 @@
     font-weight: 500;
     color: var(--secondary, #000);
     margin-bottom: 0.25rem;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
   }
 }
 
@@ -283,5 +283,35 @@
     background: rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.2);
     color: var(--color-black, #000);
+  }
+}
+
+/* Mobile responsive styles for input-button rows */
+@media (max-width: 768px) {
+  :global(.input-button-row) {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  :global(.add-button) {
+    width: 100% !important;
+    min-width: unset !important;
+    margin-top: 0 !important;
+  }
+
+  /* Better spacing for form sections on mobile */
+  .formSection {
+    padding: 1rem 0.5rem;
+  }
+
+  .row {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  /* Smaller text on mobile for better fit */
+  .sectionTitle {
+    font-size: 1.25rem !important;
   }
 }

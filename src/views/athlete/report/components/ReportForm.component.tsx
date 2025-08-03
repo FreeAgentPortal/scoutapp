@@ -160,11 +160,13 @@ const ReportForm: React.FC<ReportFormProps> = ({
   ];
 
   const onFormSubmit = (data: FormData) => {
-    // Validate minimum 3 attributes
-    const ratingCount = Object.keys(data.ratingBreakdown || {}).length;
-    if (ratingCount < 3) {
-      alert("Please select and rate at least 3 attributes for a comprehensive evaluation.");
-      return;
+    // Only validate minimum attributes for new reports and non-finalized reports
+    if (!existingReport || !existingReport.isFinalized) {
+      const ratingCount = Object.keys(data.ratingBreakdown || {}).length;
+      if (ratingCount < 3) {
+        alert("Please select and rate at least 3 attributes for a comprehensive evaluation.");
+        return;
+      }
     }
 
     const formData = {
@@ -233,61 +235,132 @@ const ReportForm: React.FC<ReportFormProps> = ({
       {/* Rating Breakdown */}
       <div className={formStyles.formSection}>
         <h3 className={formStyles.sectionTitle}>Player Evaluation</h3>
-        <p style={{ marginBottom: "1rem", color: "var(--color-text-secondary)" }}>
-          Select at least 3 attributes to evaluate. Rate each on a scale of 1-5.
-        </p>
 
-        {/* Add Attribute Button */}
-        <div style={{ marginBottom: "1.5rem" }}>
-          <button
-            type="button"
-            onClick={() => setIsModalOpen(true)}
-            className={formStyles.submit}
-            style={{
-              backgroundColor: "var(--primary, #1e40af)",
-              fontSize: "0.875rem",
-              padding: "0.75rem 1rem",
-            }}
-          >
-            + Add Player Evaluation
-          </button>
-        </div>
-
-        {/* Selected Attributes */}
-        {selectedAttributes.length > 0 && (
+        {existingReport?.isFinalized ? (
+          // Finalized report - Show existing evaluations as read-only
           <div>
-            <h4 style={{ marginBottom: "1rem", fontSize: "1rem", fontWeight: "600" }}>
-              Selected Evaluations ({selectedAttributes.length})
-            </h4>
+            <div
+              style={{
+                padding: "1rem",
+                backgroundColor: "rgba(255, 193, 7, 0.1)",
+                border: "1px solid var(--color-warning, #ffc107)",
+                borderRadius: "8px",
+                marginBottom: "1.5rem",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                <span style={{ fontSize: "1.25rem" }}>🔒</span>
+                <h4
+                  style={{
+                    margin: 0,
+                    fontSize: "1rem",
+                    fontWeight: "600",
+                    color: "var(--color-warning-dark, #856404)",
+                  }}
+                >
+                  Player Evaluations Locked
+                </h4>
+              </div>
+              <p style={{ margin: 0, fontSize: "0.875rem", color: "var(--color-warning-dark, #856404)" }}>
+                This report has been finalized by an administrator. Player evaluation scores cannot be modified as they
+                have been calculated into the athlete&apos;s diamond rating.
+              </p>
+            </div>
 
-            {selectedAttributes.map((attribute) => {
-              const rating = currentRatings[attribute];
-              return (
-                <AttributeCard
-                  key={attribute}
-                  attribute={attribute}
-                  score={rating?.score || 0}
-                  comments={rating?.comments}
-                  onRemove={() => removeRatingAttribute(attribute)}
-                />
-              );
-            })}
+            {/* Display existing evaluations as read-only */}
+            {selectedAttributes.length > 0 ? (
+              <div>
+                <h4 style={{ marginBottom: "1rem", fontSize: "1rem", fontWeight: "600" }}>
+                  Finalized Evaluations ({selectedAttributes.length})
+                </h4>
+                {selectedAttributes.map((attribute) => {
+                  const rating = currentRatings[attribute];
+                  return (
+                    <AttributeCard
+                      key={attribute}
+                      attribute={attribute}
+                      score={rating?.score || 0}
+                      comments={rating?.comments}
+                      readOnly={true}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div
+                style={{
+                  padding: "2rem",
+                  textAlign: "center",
+                  backgroundColor: "rgba(255, 255, 255, 0.03)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "8px",
+                  color: "var(--text-secondary, #ccc)",
+                }}
+              >
+                <p style={{ margin: 0, fontSize: "1rem" }}>No evaluations found in this report.</p>
+              </div>
+            )}
           </div>
-        )}
+        ) : (
+          // Create mode OR editable existing report - Allow full editing
+          <div>
+            <p style={{ marginBottom: "1rem", color: "var(--color-text-secondary)" }}>
+              Select at least 3 attributes to evaluate. Rate each on a scale of 1-5.
+            </p>
 
-        {/* Validation Message */}
-        {selectedAttributes.length < 3 && (
-          <div
-            style={{
-              padding: "0.75rem",
-              backgroundColor: "rgba(255, 193, 7, 0.1)",
-              border: "1px solid var(--color-warning, #ffc107)",
-              borderRadius: "6px",
-              fontSize: "0.875rem",
-              color: "var(--color-warning-dark, #856404)",
-            }}
-          >
-            ⚠️ Please select at least 3 attributes to evaluate for a comprehensive assessment.
+            {/* Add Attribute Button */}
+            <div style={{ marginBottom: "1.5rem" }}>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className={formStyles.submit}
+                style={{
+                  backgroundColor: "var(--primary, #1e40af)",
+                  fontSize: "0.875rem",
+                  padding: "0.75rem 1rem",
+                }}
+              >
+                + Add Player Evaluation
+              </button>
+            </div>
+
+            {/* Selected Attributes */}
+            {selectedAttributes.length > 0 && (
+              <div>
+                <h4 style={{ marginBottom: "1rem", fontSize: "1rem", fontWeight: "600" }}>
+                  Selected Evaluations ({selectedAttributes.length})
+                </h4>
+
+                {selectedAttributes.map((attribute) => {
+                  const rating = currentRatings[attribute];
+                  return (
+                    <AttributeCard
+                      key={attribute}
+                      attribute={attribute}
+                      score={rating?.score || 0}
+                      comments={rating?.comments}
+                      onRemove={() => removeRatingAttribute(attribute)}
+                    />
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Validation Message */}
+            {selectedAttributes.length < 3 && (
+              <div
+                style={{
+                  padding: "0.75rem",
+                  backgroundColor: "rgba(255, 193, 7, 0.1)",
+                  border: "1px solid var(--color-warning, #ffc107)",
+                  borderRadius: "6px",
+                  fontSize: "0.875rem",
+                  color: "var(--color-warning-dark, #856404)",
+                }}
+              >
+                ⚠️ Please select at least 3 attributes to evaluate for a comprehensive assessment.
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -318,7 +391,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
         </p>
 
         <div style={{ marginBottom: "1rem" }}>
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-end" }}>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-end" }} className="input-button-row">
             <div className={formStyles.field} style={{ flex: 1, margin: 0 }}>
               <label className={formStyles.label}>Add Strength</label>
               <input
@@ -338,11 +411,12 @@ const ReportForm: React.FC<ReportFormProps> = ({
             <button
               type="button"
               onClick={addStrength}
-              className={formStyles.submit}
+              className={`${formStyles.submit} add-button`}
               style={{
                 fontSize: "0.875rem",
                 padding: "0.75rem 1rem",
                 height: "fit-content",
+                minWidth: "80px",
               }}
             >
               Add
@@ -400,7 +474,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
         </p>
 
         <div style={{ marginBottom: "1rem" }}>
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-end" }}>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-end" }} className="input-button-row">
             <div className={formStyles.field} style={{ flex: 1, margin: 0 }}>
               <label className={formStyles.label}>Add Weakness</label>
               <input
@@ -420,11 +494,12 @@ const ReportForm: React.FC<ReportFormProps> = ({
             <button
               type="button"
               onClick={addWeakness}
-              className={formStyles.submit}
+              className={`${formStyles.submit} add-button`}
               style={{
                 fontSize: "0.875rem",
                 padding: "0.75rem 1rem",
                 height: "fit-content",
+                minWidth: "80px",
               }}
             >
               Add
@@ -488,7 +563,11 @@ const ReportForm: React.FC<ReportFormProps> = ({
               Athlete&apos;s Claimed Metrics
             </h4>
             <div
-              style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "0.75rem" }}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "0.75rem",
+              }}
             >
               {Object.entries(athlete.metrics).map(([metricName, metricValue]) => {
                 const isVerified = currentVerifiedMetrics.includes(metricName);
@@ -603,7 +682,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
         </p>
 
         <div style={{ marginBottom: "1rem" }}>
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-end" }}>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-end" }} className="input-button-row">
             <div className={formStyles.field} style={{ flex: 1, margin: 0 }}>
               <label className={formStyles.label}>Add Tag</label>
               <input
@@ -623,11 +702,12 @@ const ReportForm: React.FC<ReportFormProps> = ({
             <button
               type="button"
               onClick={addTag}
-              className={formStyles.submit}
+              className={`${formStyles.submit} add-button`}
               style={{
                 fontSize: "0.875rem",
                 padding: "0.75rem 1rem",
                 height: "fit-content",
+                minWidth: "80px",
               }}
             >
               Add
@@ -731,13 +811,23 @@ const ReportForm: React.FC<ReportFormProps> = ({
                   type="checkbox"
                   {...register("isDraft")}
                   id="isDraft"
+                  disabled={existingReport?.isFinalized}
                   style={{
                     width: "1.25rem",
                     height: "1.25rem",
-                    cursor: "pointer",
+                    cursor: existingReport?.isFinalized ? "not-allowed" : "pointer",
+                    opacity: existingReport?.isFinalized ? 0.5 : 1,
                   }}
                 />
-                <label htmlFor="isDraft" className={formStyles.label} style={{ margin: 0, cursor: "pointer" }}>
+                <label
+                  htmlFor="isDraft"
+                  className={formStyles.label}
+                  style={{
+                    margin: 0,
+                    cursor: existingReport?.isFinalized ? "not-allowed" : "pointer",
+                    opacity: existingReport?.isFinalized ? 0.5 : 1,
+                  }}
+                >
                   Save as Draft
                 </label>
               </div>
@@ -750,8 +840,9 @@ const ReportForm: React.FC<ReportFormProps> = ({
                 paddingLeft: "1.75rem",
               }}
             >
-              Draft reports won&apos;t affect the player&apos;s overall rating until finalized. Uncheck when you&apos;re
-              ready to submit.
+              {existingReport?.isFinalized
+                ? "This report has been finalized and cannot be changed back to draft status."
+                : "Draft reports won't affect the player's overall rating until finalized. Uncheck when you're ready to submit."}
             </div>
           </div>
 
@@ -777,20 +868,26 @@ const ReportForm: React.FC<ReportFormProps> = ({
               </div>
               <div>
                 <strong>Status:</strong>{" "}
-                {watch("isDraft") ? "Draft (won't affect player rating)" : "Final (will contribute to player score)"}
+                {existingReport?.isFinalized
+                  ? "Finalized (locked by administrator)"
+                  : watch("isDraft")
+                  ? "Draft (won't affect player rating)"
+                  : "Final (will contribute to player score)"}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Attribute Modal */}
-      <AttributeModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAdd={addRatingAttribute}
-        selectedAttributes={selectedAttributes}
-      />
+      {/* Attribute Modal - Only show when report is not finalized */}
+      {!existingReport?.isFinalized && (
+        <AttributeModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onAdd={addRatingAttribute}
+          selectedAttributes={selectedAttributes}
+        />
+      )}
 
       {/* Form Actions */}
       <div className={formStyles.actions}>
