@@ -8,6 +8,7 @@ import { useInterfaceStore } from "@/state/interface";
 import styles from "./TicketDetail.module.scss";
 import { ISupportMessage } from "@/types/ISupportMessage";
 import parser from "html-react-parser";
+import TinyEditor, { TinyEditorRef } from "@/components/tinyEditor/TinyEditor.component";
 
 interface TicketDetailProps {
   ticketId: string;
@@ -18,6 +19,7 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ ticketId }) => {
   const { data: user } = useUser();
   const { addAlert } = useInterfaceStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<TinyEditorRef>(null);
 
   const [newMessage, setNewMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,6 +57,7 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ ticketId }) => {
     key: ["send-message"],
     onSuccessCallback: () => {
       setNewMessage("");
+      editorRef.current?.clearContent();
       setIsSubmitting(false);
       refetchMessages();
       addAlert({ message: "Message sent successfully", type: "success" });
@@ -96,15 +99,33 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ ticketId }) => {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMessage.trim() || isSubmitting) return;
+
+    // Create a temporary div to extract text content from HTML
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = newMessage;
+    const textContent = tempDiv.textContent || tempDiv.innerText || "";
+
+    if (!textContent.trim() || isSubmitting) return;
 
     setIsSubmitting(true);
     sendMessageMutation.mutate({
       formData: {
-        message: newMessage.trim(),
+        message: newMessage,
         sender: user?._id,
       },
     });
+  };
+
+  const handleEditorChange = (content: string) => {
+    setNewMessage(content);
+  };
+
+  // Helper function to check if HTML content has actual text
+  const hasTextContent = (htmlContent: string) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlContent;
+    const textContent = tempDiv.textContent || tempDiv.innerText || "";
+    return textContent.trim().length > 0;
   };
 
   const handleStatusUpdate = (newStatus: string) => {
@@ -282,21 +303,14 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ ticketId }) => {
         {ticket.status !== "closed" && (
           <form onSubmit={handleSendMessage} className={styles.messageForm}>
             <div className={styles.inputContainer}>
-              <textarea
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type your message..."
-                className={styles.messageInput}
-                rows={3}
-                disabled={isSubmitting}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSendMessage(e);
-                  }
-                }}
-              />
-              <button type="submit" className={styles.sendButton} disabled={!newMessage.trim() || isSubmitting}>
+              <div className={styles.editorWrapper}>
+                <TinyEditor ref={editorRef} handleChange={handleEditorChange} value={newMessage} />
+              </div>
+              <button
+                type="submit"
+                className={styles.sendButton}
+                disabled={!hasTextContent(newMessage) || isSubmitting}
+              >
                 {isSubmitting ? "Sending..." : "Send"}
               </button>
             </div>

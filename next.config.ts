@@ -76,6 +76,7 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_API_URL: process.env.API_URL || "http://localhost:5000/api/v1",
     ENCRYPTION_KEY: process.env.ENCRYPTION_KEY || "asdf234as2342asdf2i;lk342342;$23423",
+    TINYMCE_API_KEY: process.env.TINYMCE_API_KEY,
   },
 };
 
