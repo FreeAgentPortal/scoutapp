@@ -11,6 +11,7 @@ import Link from "next/link";
 import ReportForm from "./components/ReportForm.component";
 import { IScoutProfile } from "@/types/IScoutProfile";
 import { useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 
 const ReportDetails = () => {
   const params = useParams();
@@ -158,7 +159,13 @@ const ReportDetails = () => {
           <div className={styles.athleteInfo}>
             <div className={styles.athleteImageWrapper}>
               {athlete.profileImageUrl ? (
-                <img src={athlete.profileImageUrl} alt={athlete.fullName} className={styles.athleteImage} />
+                <Image
+                  src={athlete.profileImageUrl}
+                  alt={athlete.fullName}
+                  className={styles.athleteImage}
+                  width={100}
+                  height={100}
+                />
               ) : (
                 <div className={styles.athletePlaceholder}>{athlete.fullName.charAt(0)}</div>
               )}

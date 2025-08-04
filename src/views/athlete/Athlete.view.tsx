@@ -9,6 +9,7 @@ import { IAthlete } from "@/types/IAthlete";
 import AthleteInfo from "./subviews/athleteInfo/AthleteInfo.view";
 import ScoutReports from "./subviews/scoutReports/ScoutReports.view";
 import Loader from "@/components/loader/Loader.component";
+import Image from "next/image";
 
 const Athlete = () => {
   const params = useParams();
@@ -70,7 +71,13 @@ const Athlete = () => {
           <div className={styles.athleteBasic}>
             <div className={styles.imageWrapper}>
               {athlete.profileImageUrl ? (
-                <img src={athlete.profileImageUrl} alt={athlete.fullName} className={styles.profileImage} />
+                <Image
+                  src={athlete.profileImageUrl}
+                  alt={athlete.fullName}
+                  className={styles.profileImage}
+                  width={100}
+                  height={100}
+                />
               ) : (
                 <div className={styles.placeholderImage}>
                   <span>{athlete.fullName.charAt(0)}</span>

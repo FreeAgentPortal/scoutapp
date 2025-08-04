@@ -129,7 +129,7 @@ const SupportTable: React.FC<SupportTableProps> = ({ onCreateTicket }) => {
       <div className={styles.tableContainer}>
         <div className={styles.emptyState}>
           <h3>No Support Tickets Yet</h3>
-          <p>You haven't created any support tickets yet.</p>
+          <p>You haven&apos;t created any support tickets yet.</p>
           <button className={styles.createButton} onClick={onCreateTicket}>
             Create Your First Ticket
           </button>
