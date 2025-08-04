@@ -1,0 +1,110 @@
+@use "@/styles/globals.scss" as *;
+
+.statsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  width: 100%;
+
+  @include tablet {
+    flex-direction: column;
+  }
+}
+
+.statCard {
+  flex: 1;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color, #ddd);
+  background: rgba(255, 255, 255, 0.95);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &.primary {
+    border-left: 4px solid var(--primary, #007bff);
+  }
+
+  &.success {
+    border-left: 4px solid var(--success, #28a745);
+  }
+
+  &.warning {
+    border-left: 4px solid var(--warning, #ffc107);
+  }
+
+  &.info {
+    border-left: 4px solid var(--info, #17a2b8);
+  }
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cardIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--background-secondary, #f8f9fa);
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+.cardText {
+  flex: 1;
+}
+
+.cardTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary, #666);
+  margin: 0 0 0.25rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cardValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary, #333);
+  margin: 0;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .statsContainer {
+    gap: 1rem;
+  }
+
+  .statCard {
+    padding: 1rem;
+  }
+
+  .cardContent {
+    gap: 0.75rem;
+  }
+
+  .cardIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .icon {
+    font-size: 1.25rem;
+  }
+
+  .cardValue {
+    font-size: 1.5rem;
+  }
+}

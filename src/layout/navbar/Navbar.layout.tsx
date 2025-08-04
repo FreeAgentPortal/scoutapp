@@ -43,6 +43,7 @@ const Navbar: React.FC = () => {
     { href: "/reports", label: "Reports", icon: "📊" },
     { href: "/favorites", label: "Favorites", icon: "⭐" },
     { href: "/settings", label: "Settings", icon: "⚙️" },
+    { href: "/support", label: "Support", icon: "🆘" },
   ];
 
   return (

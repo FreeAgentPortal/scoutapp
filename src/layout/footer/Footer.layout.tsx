@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styles from "./Footer.module.scss";
+import Link from "next/link";
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -28,19 +29,19 @@ const Footer: React.FC = () => {
             <h4 className={styles.linkGroupTitle}>Scouting</h4>
             <ul className={styles.linkList}>
               <li>
-                <a href="#" className={styles.link}>
+                <Link href="/search" className={styles.link}>
                   Search Athletes
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className={styles.link}>
+                <Link href="/reports" className={styles.link}>
                   My Reports
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className={styles.link}>
+                <Link href="/favorites" className={styles.link}>
                   Favorites
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -49,19 +50,19 @@ const Footer: React.FC = () => {
             <h4 className={styles.linkGroupTitle}>Account</h4>
             <ul className={styles.linkList}>
               <li>
-                <a href="#" className={styles.link}>
+                <Link href="/settings" className={styles.link}>
                   Profile
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className={styles.link}>
+                <Link href="/settings" className={styles.link}>
                   Settings
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className={styles.link}>
-                  Help
-                </a>
+                <Link href="/support" className={styles.link}>
+                  Support
+                </Link>
               </li>
             </ul>
           </div>
@@ -70,11 +71,11 @@ const Footer: React.FC = () => {
         <div className={styles.copyrightSection}>
           <p className={styles.copyright}>© {currentYear} FAP Scout. All rights reserved.</p>
           <div className={styles.legalLinks}>
-            <a href="#" className={styles.legalLink}>
+            <a href="https://thefreeagentportal.com/legal/privacy" className={styles.legalLink}>
               Privacy Policy
             </a>
             <span className={styles.separator}>•</span>
-            <a href="#" className={styles.legalLink}>
+            <a href="https://thefreeagentportal.com/legal/terms" className={styles.legalLink}>
               Terms of Service
             </a>
           </div>
