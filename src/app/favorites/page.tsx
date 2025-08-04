@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import WorkInProgress from "@/components/workInProgress/WorkInProgress.component";
+import Favorites from "@/views/favorites/Favorites.view";
 
 export const metadata: Metadata = {
   title: "Favorites | FAP Scout",
@@ -13,11 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function FavoritesPage() {
-  return (
-    <WorkInProgress
-      title="Favorite Athletes"
-      description="Your personalized favorites collection is coming soon! Easily save and organize athletes you're most interested in tracking."
-      icon="⭐"
-    />
-  );
+  return <Favorites />;
 }
