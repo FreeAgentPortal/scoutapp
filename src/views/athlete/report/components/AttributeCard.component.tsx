@@ -2,6 +2,7 @@
 
 import React from "react";
 import styles from "../ReportDetails.module.scss";
+import DiamondRating from "@/components/diamondRating";
 
 interface AttributeCardProps {
   attribute: string;
@@ -19,25 +20,10 @@ const AttributeCard: React.FC<AttributeCardProps> = ({ attribute, score, comment
           <h5 className={styles.attributeName}>{attribute}</h5>
           <div className={styles.attributeScore}>
             {readOnly ? (
-              // Read-only mode with star rating display
+              // Read-only mode with diamond rating display
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <span style={{ fontSize: "0.875rem", color: "var(--text-secondary, #ccc)" }}>Score:</span>
-                <div style={{ display: "flex", gap: "0.25rem" }}>
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span
-                      key={star}
-                      style={{
-                        fontSize: "1.25rem",
-                        color: star <= score ? "#fbbf24" : "#374151",
-                      }}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </div>
-                <span style={{ fontSize: "1rem", fontWeight: "600", color: "var(--primary-light, #b3e6fc)" }}>
-                  {score}/5
-                </span>
+                <DiamondRating rating={score} size="small" showValue={true} />
               </div>
             ) : (
               // Regular mode with simple score display

@@ -194,25 +194,6 @@
   font-weight: 500;
 }
 
-.stars {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.star {
-  font-size: 1.5rem;
-  color: var(--neutral-400, #666);
-  transition: color 0.2s ease;
-
-  &.filled {
-    color: var(--warning-color, #ffc107);
-  }
-
-  @include mobile {
-    font-size: 1.25rem;
-  }
-}
-
 /* Content Section */
 .content {
   background: rgba(255, 255, 255, 0.02);

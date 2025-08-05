@@ -4,6 +4,7 @@ import React from "react";
 import styles from "./AthleteInfo.module.scss";
 import { IAthlete } from "@/types/IAthlete";
 import Loader from "@/components/loader/Loader.component";
+import DiamondRating from "@/components/diamondRating";
 
 interface AthleteInfoProps {
   athlete?: IAthlete;
@@ -128,13 +129,7 @@ const AthleteInfo: React.FC<AthleteInfoProps> = ({ athlete, loading, error }) =>
           {athlete.diamondRating && (
             <div className={styles.infoItem}>
               <span className={styles.label}>Diamond Rating:</span>
-              <div className={styles.ratingStars}>
-                {Array.from({ length: 5 }, (_, i) => (
-                  <span key={i} className={`${styles.star} ${i < athlete.diamondRating! ? styles.filled : ""}`}>
-                    ★
-                  </span>
-                ))}
-              </div>
+              <DiamondRating rating={athlete.diamondRating} size="medium" showValue={false} />
             </div>
           )}
         </div>

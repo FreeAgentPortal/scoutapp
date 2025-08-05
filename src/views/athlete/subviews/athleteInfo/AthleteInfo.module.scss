@@ -108,22 +108,6 @@
   font-weight: 500;
 }
 
-/* Rating Stars */
-.ratingStars {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.star {
-  font-size: 1.25rem;
-  color: var(--neutral-400, #666);
-  transition: color 0.2s ease;
-
-  &.filled {
-    color: var(--warning-color, #ffc107);
-  }
-}
-
 /* Measurements and Metrics */
 .measurementsGrid,
 .metricsGrid {

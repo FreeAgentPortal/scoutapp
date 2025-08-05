@@ -11,6 +11,7 @@ import ScoutReports from "./subviews/scoutReports/ScoutReports.view";
 import Loader from "@/components/loader/Loader.component";
 import Image from "next/image";
 import { useSearchStore } from "@/state/search";
+import DiamondRating from "@/components/diamondRating";
 
 const Athlete = () => {
   const params = useParams();
@@ -105,13 +106,7 @@ const Athlete = () => {
               {athlete.diamondRating && (
                 <div className={styles.rating}>
                   <span className={styles.ratingLabel}>Diamond Rating:</span>
-                  <div className={styles.stars}>
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <span key={i} className={`${styles.star} ${i < athlete.diamondRating! ? styles.filled : ""}`}>
-                        ★
-                      </span>
-                    ))}
-                  </div>
+                  <DiamondRating rating={athlete.diamondRating} size="medium" showValue={false} />
                 </div>
               )}
             </div>

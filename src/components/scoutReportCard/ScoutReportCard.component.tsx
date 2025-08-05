@@ -3,6 +3,7 @@
 import React from "react";
 import styles from "./ScoutReportCard.module.scss";
 import { ScoutReportCardProps } from "./ScoutReportCard.types";
+import DiamondRating from "@/components/diamondRating";
 
 const ScoutReportCard: React.FC<ScoutReportCardProps> = ({ report, onClick }) => {
   const formatDate = (date: Date) => {
@@ -10,36 +11,6 @@ const ScoutReportCard: React.FC<ScoutReportCardProps> = ({ report, onClick }) =>
       month: "short",
       day: "numeric",
       year: "numeric",
-    });
-  };
-
-  const getRatingColor = (rating: number) => {
-    if (rating >= 4) return styles.excellent;
-    if (rating >= 3) return styles.good;
-    if (rating >= 2) return styles.average;
-    return styles.poor;
-  };
-
-  const renderDiamonds = (rating: number) => {
-    // Renders 5 diamonds with support for half-filled diamonds
-    // Examples: 3.0 = 3 full, 2 empty | 3.5 = 3 full, 1 half, 1 empty | 4.7 = 4 full, 1 half
-    return Array.from({ length: 5 }, (_, i) => {
-      const diamondIndex = i + 1;
-      let diamondClass = styles.diamond;
-
-      if (rating >= diamondIndex) {
-        // Full diamond
-        diamondClass += ` ${styles.filled}`;
-      } else if (rating >= diamondIndex - 0.5) {
-        // Half diamond
-        diamondClass += ` ${styles.halfFilled}`;
-      }
-
-      return (
-        <span key={i} className={diamondClass}>
-          <span className={styles.diamondIcon}>♦</span>
-        </span>
-      );
     });
   };
 
@@ -73,8 +44,7 @@ const ScoutReportCard: React.FC<ScoutReportCardProps> = ({ report, onClick }) =>
 
         {/* Rating */}
         <div className={styles.rating}>
-          <div className={`${styles.ratingValue} ${getRatingColor(report.diamondRating)}`}>{report.diamondRating}</div>
-          <div className={styles.ratingDiamonds}>{renderDiamonds(report.diamondRating)}</div>
+          <DiamondRating rating={report.diamondRating} size="small" showValue={true} className={styles.cardRating} />
         </div>
       </div>
 
