@@ -7,6 +7,7 @@ import { IAthlete } from "@/types/IAthlete";
 import useApiHook from "@/hooks/useApi";
 import Loader from "@/components/loader/Loader.component";
 import { IScoutReport } from "@/types/IScoutReport";
+import { useSearchStore } from "@/state/search";
 
 interface ScoutReportsProps {
   athleteId: string;
@@ -15,11 +16,12 @@ interface ScoutReportsProps {
 
 const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
   // Fetch scout reports for this athlete
+  const { pageNumber } = useSearchStore((state) => state);
   const { data, isLoading, isError, error } = useApiHook({
     method: "GET",
     url: `/scout`,
     filter: `athleteId;${athleteId}|isFinalized;true`,
-    key: ["scout-reports", athleteId],
+    key: ["scout-reports", athleteId, pageNumber as any],
     enabled: !!athleteId,
   }) as any;
 
@@ -140,7 +142,7 @@ const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
                 <div className={styles.scoutProfile}>
                   <div className={styles.scoutAvatarPlaceholder}>{report.scout?.displayName?.charAt(0) || "S"}</div>
                   <div className={styles.scoutDetails}>
-                    <h3 className={styles.scoutName}>{report.scout?.displayName || "Anonymous Scout"}</h3>
+                    <h3 className={styles.scoutName}>{report.scout?.displayName || report.scout?.user?.fullName || "Anonymous Scout"}</h3>
                     {report.scout?.teams && report.scout.teams.length > 0 && (
                       <span className={styles.scoutOrg}>{report.scout.teams[0]}</span>
                     )}

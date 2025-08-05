@@ -10,11 +10,14 @@ import AthleteInfo from "./subviews/athleteInfo/AthleteInfo.view";
 import ScoutReports from "./subviews/scoutReports/ScoutReports.view";
 import Loader from "@/components/loader/Loader.component";
 import Image from "next/image";
+import { useSearchStore } from "@/state/search";
 
 const Athlete = () => {
   const params = useParams();
   const athleteId = params?.id as string;
   const [activeTab, setActiveTab] = useState("info");
+
+  const { setPageNumber, pageNumber } = useSearchStore((state) => state);
 
   // Fetch athlete data
   const { data, isLoading, isError, error, refetch } = useApiHook({
@@ -26,6 +29,9 @@ const Athlete = () => {
 
   const athlete = data?.payload as IAthlete;
 
+  useEffect(() => {
+    setPageNumber(1); // Reset page number when athleteId changes
+  }, [athleteId, setPageNumber]);
   const tabItems = [
     {
       id: "info",

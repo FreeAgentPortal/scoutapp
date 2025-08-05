@@ -1,3 +1,5 @@
+import IUser from "./IUser";
+
 export interface IScoutProfile {
   _id: string;
   userId: string;
@@ -9,6 +11,7 @@ export interface IScoutProfile {
   permissions?: string[]; // Array of permissions assigned to the scout
   isActive?: boolean; // Whether the scout profile is active or not, soft delete flag
   teams?: string[]; // Teams associated with the scout
+  user: IUser;
   sports?: string[]; // Sports that the scout specializes in
   leagues?: string[]; // Leagues that the scout covers
   createdAt: Date; // Timestamp when the profile was created
