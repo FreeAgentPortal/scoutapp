@@ -8,6 +8,7 @@ import useApiHook from "@/hooks/useApi";
 import Loader from "@/components/loader/Loader.component";
 import { IScoutReport } from "@/types/IScoutReport";
 import { useSearchStore } from "@/state/search";
+import ScoutReportCard from "@/components/scoutReportCard";
 
 interface ScoutReportsProps {
   athleteId: string;
@@ -81,41 +82,6 @@ const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
     );
   }
 
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const getRatingColor = (rating: number) => {
-    if (rating >= 4) return styles.excellent;
-    if (rating >= 3) return styles.good;
-    if (rating >= 2) return styles.average;
-    return styles.poor;
-  };
-
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <span key={i} className={`${styles.star} ${i < rating ? styles.filled : ""}`}>
-        ★
-      </span>
-    ));
-  };
-
-  const getReportTypeLabel = (reportType: string) => {
-    const typeLabels: Record<string, string> = {
-      game: "Game Report",
-      evaluation: "Evaluation",
-      camp: "Camp Report",
-      combine: "Combine Report",
-      interview: "Interview",
-      other: "Other",
-    };
-    return typeLabels[reportType] || reportType;
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -135,77 +101,14 @@ const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
 
       <div className={styles.reportsList}>
         {reports.map((report) => (
-          <div key={report._id} className={styles.reportCard}>
-            {/* Report Header */}
-            <div className={styles.reportHeader}>
-              <div className={styles.scoutInfo}>
-                <div className={styles.scoutProfile}>
-                  <div className={styles.scoutAvatarPlaceholder}>{report.scout?.displayName?.charAt(0) || "S"}</div>
-                  <div className={styles.scoutDetails}>
-                    <h3 className={styles.scoutName}>{report.scout?.displayName || report.scout?.user?.fullName || "Anonymous Scout"}</h3>
-                    {report.scout?.teams && report.scout.teams.length > 0 && (
-                      <span className={styles.scoutOrg}>{report.scout.teams[0]}</span>
-                    )}
-                  </div>
-                </div>
-                <div className={styles.reportMeta}>
-                  <span className={styles.reportType}>{getReportTypeLabel(report.reportType)}</span>
-                  <span className={styles.reportDate}>{formatDate(report.createdAt)}</span>
-                  {report.sport && (
-                    <span className={styles.sportLeague}>
-                      {report.sport} {report.league && `• ${report.league}`}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className={styles.overallRating}>
-                <span className={styles.ratingLabel}>Diamond Rating</span>
-                <div className={`${styles.ratingValue} ${getRatingColor(report.diamondRating)}`}>
-                  {report.diamondRating}/5
-                </div>
-                <div className={styles.ratingStars}>{renderStars(report.diamondRating)}</div>
-              </div>
-            </div>
-
-            {/* Report Status and Type Info */}
-            <div className={styles.reportInfo}>
-              <div className={styles.statusBadges}>
-                {report.isFinalized && <span className={styles.finalizedBadge}>✓ Finalized</span>}
-                {report.isDraft && <span className={styles.draftBadge}>📝 Draft</span>}
-                {report.isPublic && <span className={styles.publicBadge}>🌐 Public</span>}
-                {report.status && (
-                  <span className={`${styles.statusBadge} ${styles[report.status]}`}>
-                    {report.status.charAt(0).toUpperCase() + report.status.slice(1)}
-                  </span>
-                )}
-              </div>
-
-              {report.tags && report.tags.length > 0 && (
-                <div className={styles.tags}>
-                  {report.tags.map((tag, index) => (
-                    <span key={index} className={styles.tag}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Limited Visibility Notice */}
-            <div className={styles.privacyNotice}>
-              <span className={styles.privacyIcon}>🔒</span>
-              <span className={styles.privacyText}>Detailed evaluation content is private to the reporting scout</span>
-            </div>
-
-            {/* Report Footer */}
-            <div className={styles.reportFooter}>
-              <span className={styles.reportId}>ID: {report._id.slice(-8)}</span>
-              <span className={styles.createdDate}>Created: {formatDate(report.createdAt)}</span>
-              {report.updatedAt !== report.createdAt && (
-                <span className={styles.updatedDate}>Updated: {formatDate(report.updatedAt)}</span>
-              )}
-            </div>
-          </div>
+          <ScoutReportCard
+            key={report._id}
+            report={report}
+            onClick={() => {
+              // Navigate to detailed report view
+              window.location.href = `/reports/${report._id}`;
+            }}
+          />
         ))}
       </div>
     </div>
