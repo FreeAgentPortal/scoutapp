@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AthleteCardProps, AthleteCardRef } from "./AthleteCard.types";
 import styles from "./AthleteCard.module.scss";
 import Link from "next/link";
+import DiamondRating from "@/components/diamondRating";
 
 const AthleteCard = forwardRef<AthleteCardRef, AthleteCardProps>(
   (
@@ -78,7 +79,11 @@ const AthleteCard = forwardRef<AthleteCardRef, AthleteCardProps>(
           />
 
           {/* Rating Badge */}
-          {athlete.diamondRating && <div className={styles.ratingBadge}>⭐ {athlete.diamondRating.toFixed(1)}</div>}
+          {athlete.diamondRating && (
+            <div className={styles.ratingBadge}>
+              <DiamondRating rating={athlete.diamondRating} size="small" showValue={true} />
+            </div>
+          )}
 
           {/* Favorite Button */}
           {showActions && (

@@ -8,6 +8,7 @@ import { IScoutReport } from "@/types/IScoutReport";
 import { useQueryClient } from "@tanstack/react-query";
 import Search from "@/components/search/Search.component";
 import Paginator from "@/components/pagination/Paginator.component";
+import DiamondRating from "@/components/diamondRating";
 import Loader from "@/components/loader/Loader.component";
 
 const REPORTS_PER_PAGE = 10;
@@ -192,7 +193,11 @@ const Reports = () => {
                   </td>
                   <td>{getVisibilityBadge(report.isPublic)}</td>
                   <td className={styles.rating}>
-                    <div className={styles.diamondRating}>♦ {report.diamondRating?.toFixed(1) || "N/A"}</div>
+                    {report.diamondRating ? (
+                      <DiamondRating rating={report.diamondRating} size="small" showValue={true} />
+                    ) : (
+                      <span className={styles.noRating}>N/A</span>
+                    )}
                   </td>
                   <td className={styles.date}>{formatDate(report.createdAt)}</td>
                   <td className={styles.actions}>

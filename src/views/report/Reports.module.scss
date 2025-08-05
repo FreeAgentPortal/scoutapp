@@ -259,10 +259,10 @@
   text-align: center;
 }
 
-.diamondRating {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--primary-light, #b3e6fc);
+.noRating {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #666);
+  font-style: italic;
 }
 
 /* Date */
