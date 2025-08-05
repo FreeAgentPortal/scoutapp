@@ -144,25 +144,68 @@
   }
 }
 
-.ratingStars {
+.ratingDiamonds {
   display: flex;
-  gap: 1px;
+  gap: 2px;
 
   @include mobile {
-    gap: 0;
+    gap: 1px;
   }
 }
 
-.star {
-  font-size: 0.75rem;
+.diamond {
+  position: relative;
+  font-size: 0.85rem;
   color: #ddd;
+  transition: all 0.2s ease;
+  line-height: 1;
+
+  @include mobile {
+    font-size: 0.8rem;
+  }
+
+  .diamondIcon {
+    display: block;
+  }
 
   &.filled {
     color: #ffc107;
+    text-shadow: 0 0 3px rgba(255, 193, 7, 0.6);
   }
 
-  @include mobile {
-    font-size: 0.7rem;
+  &.halfFilled {
+    color: #ddd;
+
+    .diamondIcon {
+      background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      // Add a subtle glow to the filled half
+      filter: drop-shadow(0 0 1px rgba(255, 193, 7, 0.3));
+    }
+
+    // Enhanced fallback for browsers that don't support background-clip: text
+    @supports not (background-clip: text) {
+      &::before {
+        content: "♦";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+        color: #ffc107;
+        text-shadow: 0 0 2px rgba(255, 193, 7, 0.5);
+        z-index: 1;
+      }
+
+      .diamondIcon {
+        position: relative;
+        z-index: 0;
+      }
+    }
   }
 }
 

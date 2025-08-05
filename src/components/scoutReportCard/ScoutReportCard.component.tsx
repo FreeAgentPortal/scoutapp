@@ -20,12 +20,27 @@ const ScoutReportCard: React.FC<ScoutReportCardProps> = ({ report, onClick }) =>
     return styles.poor;
   };
 
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <span key={i} className={`${styles.star} ${i < rating ? styles.filled : ""}`}>
-        ★
-      </span>
-    ));
+  const renderDiamonds = (rating: number) => {
+    // Renders 5 diamonds with support for half-filled diamonds
+    // Examples: 3.0 = 3 full, 2 empty | 3.5 = 3 full, 1 half, 1 empty | 4.7 = 4 full, 1 half
+    return Array.from({ length: 5 }, (_, i) => {
+      const diamondIndex = i + 1;
+      let diamondClass = styles.diamond;
+
+      if (rating >= diamondIndex) {
+        // Full diamond
+        diamondClass += ` ${styles.filled}`;
+      } else if (rating >= diamondIndex - 0.5) {
+        // Half diamond
+        diamondClass += ` ${styles.halfFilled}`;
+      }
+
+      return (
+        <span key={i} className={diamondClass}>
+          <span className={styles.diamondIcon}>♦</span>
+        </span>
+      );
+    });
   };
 
   const getReportTypeLabel = (reportType: string) => {
@@ -59,7 +74,7 @@ const ScoutReportCard: React.FC<ScoutReportCardProps> = ({ report, onClick }) =>
         {/* Rating */}
         <div className={styles.rating}>
           <div className={`${styles.ratingValue} ${getRatingColor(report.diamondRating)}`}>{report.diamondRating}</div>
-          <div className={styles.ratingStars}>{renderStars(report.diamondRating)}</div>
+          <div className={styles.ratingDiamonds}>{renderDiamonds(report.diamondRating)}</div>
         </div>
       </div>
 
