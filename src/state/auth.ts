@@ -48,4 +48,9 @@ export const useUser = (token?: string, onSuccess?: () => void, onError?: () => 
 
 export const logout = (redirect?: boolean) => {
   localStorage.removeItem("token");
+
+  // Force page reload to trigger AuthGuard re-evaluation
+  if (typeof window !== "undefined") {
+    window.location.href = "/";
+  }
 };

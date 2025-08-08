@@ -30,6 +30,7 @@ const ScoutWrapper = (props: Props) => {
 
   const selectedProfile = scoutProfileQuery.data;
   const profileIsLoading = scoutProfileQuery.isLoading;
+  const profileError = scoutProfileQuery.isError || scoutProfileQuery.error;
 
   // Set up socket connection
   const { socket, isConnecting, setSocket, setIsConnecting } = useSocketStore((state: any) => state);
@@ -82,10 +83,17 @@ const ScoutWrapper = (props: Props) => {
     // Don't check authorization while still loading
     if (userIsLoading || profileIsLoading) return;
 
+    // If there's an error fetching the scout profile
+    if (profileError) {
+      alert("Failed to load scout profile. Your account may not have proper scout access. Please contact support.");
+      logout(true);
+      return;
+    }
+
     // If user is logged in but has no scout profile reference
     if (loggedInData && !loggedInData?.profileRefs?.["scout"]) {
       alert("You do not have a scout profile associated with your account. Please contact support for access.");
-      logout(false);
+      logout(true);
       return;
     }
 
@@ -93,19 +101,35 @@ const ScoutWrapper = (props: Props) => {
     if (selectedProfile !== undefined) {
       // If selectedProfile is null or doesn't have scout role, deny access
       if (!selectedProfile?.payload) {
-        alert("You are not authorized to access the scout portal. Scout permissions required.");
-        logout(false);
+        alert(
+          "Invalid scout profile detected. Your account does not have proper scout credentials. Please contact support."
+        );
+        logout(true);
+        return;
+      }
+
+      // Check if the scout profile belongs to the logged-in user
+      if (selectedProfile?.payload?.user !== loggedInData?._id) {
+        alert("Scout profile mismatch detected. Please contact support for assistance.");
+        logout(true);
         return;
       }
 
       // Additional check for scout-specific permissions if needed
       if (!selectedProfile?.payload?.isActive) {
         alert("Your scout profile is not active. Please contact support for assistance.");
-        logout(false);
+        logout(true);
+        return;
+      }
+
+      // Check if the scout has proper permissions
+      if (!selectedProfile?.payload?.permissions || selectedProfile?.payload?.permissions?.length === 0) {
+        alert("Your scout profile does not have sufficient permissions. Please contact support.");
+        logout(true);
         return;
       }
     }
-  }, [loggedInData, selectedProfile, userIsLoading, profileIsLoading]);
+  }, [loggedInData, selectedProfile, userIsLoading, profileIsLoading, profileError]);
 
   // Show loading state while checking authorization
   if (userIsLoading || profileIsLoading) {

@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
   }, [window.innerWidth]);
 
   const handleLogout = () => {
-    logout(false);
+    logout(true);
     setIsDrawerOpen(false);
   };
 
