@@ -9,6 +9,7 @@ import { SPORTS_DATA } from "@/data/sports.data";
 import { LEAGUES_DATA } from "@/data/leagues.data";
 import AttributeModal from "./AttributeModal.component";
 import AttributeCard from "./AttributeCard.component";
+import ConfirmationModal from "./ConfirmationModal.component";
 
 interface ReportFormProps {
   athleteId: string;
@@ -42,6 +43,8 @@ const ReportForm: React.FC<ReportFormProps> = ({
   isSubmitting = false,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [pendingFormData, setPendingFormData] = useState<Partial<IScoutReport> | null>(null);
   const [newStrength, setNewStrength] = useState("");
   const [newWeakness, setNewWeakness] = useState("");
   const [newTag, setNewTag] = useState("");
@@ -174,7 +177,28 @@ const ReportForm: React.FC<ReportFormProps> = ({
       athleteId,
     };
 
-    onSubmit(formData);
+    // Check if this is being submitted as a final draft (not a draft)
+    if (!data.isDraft && !existingReport?.isFinalized) {
+      // Show confirmation modal for final submissions
+      setPendingFormData(formData);
+      setIsConfirmationOpen(true);
+    } else {
+      // Submit directly for drafts or already finalized reports
+      onSubmit(formData);
+    }
+  };
+
+  const handleConfirmSubmission = () => {
+    if (pendingFormData) {
+      onSubmit(pendingFormData);
+      setIsConfirmationOpen(false);
+      setPendingFormData(null);
+    }
+  };
+
+  const handleCancelConfirmation = () => {
+    setIsConfirmationOpen(false);
+    setPendingFormData(null);
   };
 
   return (
@@ -888,6 +912,17 @@ const ReportForm: React.FC<ReportFormProps> = ({
           selectedAttributes={selectedAttributes}
         />
       )}
+
+      {/* Confirmation Modal for final submissions */}
+      <ConfirmationModal
+        isOpen={isConfirmationOpen}
+        onClose={handleCancelConfirmation}
+        onConfirm={handleConfirmSubmission}
+        athleteName={athlete?.fullName || "this athlete"}
+        formData={pendingFormData || {}}
+        isSubmitting={isSubmitting}
+        isEdit={!!existingReport}
+      />
 
       {/* Form Actions */}
       <div className={formStyles.actions}>
