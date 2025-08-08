@@ -5,7 +5,7 @@ import styles from "./ScoutReportCard.module.scss";
 import { ScoutReportCardProps } from "./ScoutReportCard.types";
 import DiamondRating from "@/components/diamondRating";
 
-const ScoutReportCard: React.FC<ScoutReportCardProps> = ({ report, onClick }) => {
+const ScoutReportCard: React.FC<ScoutReportCardProps> = ({ report, onClick, isRestricted = false }) => {
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString("en-US", {
       month: "short",
@@ -27,7 +27,11 @@ const ScoutReportCard: React.FC<ScoutReportCardProps> = ({ report, onClick }) =>
   };
 
   return (
-    <div className={`${styles.reportCard} ${onClick ? styles.clickable : ""}`} onClick={onClick}>
+    <div
+      className={`${styles.reportCard} ${onClick ? styles.clickable : ""} ${isRestricted ? styles.restricted : ""}`}
+      onClick={onClick}
+      title={isRestricted ? "You can only view reports you've created" : "Click to view full report"}
+    >
       {/* Scout Profile & Basic Info */}
       <div className={styles.cardHeader}>
         <div className={styles.scoutProfile}>
@@ -44,7 +48,13 @@ const ScoutReportCard: React.FC<ScoutReportCardProps> = ({ report, onClick }) =>
 
         {/* Rating */}
         <div className={styles.rating}>
-          <DiamondRating rating={report.diamondRating} size="small" showValue={true} className={styles.cardRating} />
+          {isRestricted ? (
+            <div className={styles.restrictedRating}>
+              <span className={styles.restrictedText}>🔒 Private</span>
+            </div>
+          ) : (
+            <DiamondRating rating={report.diamondRating} size="small" showValue={true} className={styles.cardRating} />
+          )}
         </div>
       </div>
 
@@ -61,12 +71,20 @@ const ScoutReportCard: React.FC<ScoutReportCardProps> = ({ report, onClick }) =>
           )}
         </div>
 
-        {/* Status Badges */}
+        {/* Status Badges - Show limited info for restricted reports */}
         <div className={styles.statusBadges}>
-          {report.isFinalized && <span className={styles.finalizedBadge}>✓</span>}
-          {report.isDraft && <span className={styles.draftBadge}>📝</span>}
-          {report.isPublic && <span className={styles.publicBadge}>🌐</span>}
-          {report.status && <span className={`${styles.statusBadge} ${styles[report.status]}`}>{report.status}</span>}
+          {isRestricted ? (
+            <span className={styles.restrictedBadge}>🔒 Restricted Access</span>
+          ) : (
+            <>
+              {report.isFinalized && <span className={styles.finalizedBadge}>✓</span>}
+              {report.isDraft && <span className={styles.draftBadge}>📝</span>}
+              {report.isPublic && <span className={styles.publicBadge}>🌐</span>}
+              {report.status && (
+                <span className={`${styles.statusBadge} ${styles[report.status]}`}>{report.status}</span>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

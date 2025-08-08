@@ -9,6 +9,7 @@ import Loader from "@/components/loader/Loader.component";
 import { IScoutReport } from "@/types/IScoutReport";
 import { useSearchStore } from "@/state/search";
 import ScoutReportCard from "@/components/scoutReportCard";
+import { useUser } from "@/state/auth";
 
 interface ScoutReportsProps {
   athleteId: string;
@@ -16,6 +17,9 @@ interface ScoutReportsProps {
 }
 
 const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
+  // Get current user to check report ownership
+  const { data: currentUser } = useUser();
+
   // Fetch scout reports for this athlete
   const { pageNumber } = useSearchStore((state) => state);
   const { data, isLoading, isError, error } = useApiHook({
@@ -27,6 +31,23 @@ const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
   }) as any;
 
   const reports = data?.payload as IScoutReport[];
+
+  // Helper function to check if current user owns the report
+  const isUserReport = (report: IScoutReport): boolean => {
+    if (!currentUser) return false;
+
+    // Check if the scout's userId matches the current user's ID
+    if (report.scout?.userId === currentUser._id) {
+      return true;
+    }
+
+    // Fallback: check if scoutId directly matches user ID (in case scout profile isn't populated)
+    if (report.scoutId === currentUser._id) {
+      return true;
+    }
+
+    return false;
+  };
 
   if (isLoading) {
     return (
@@ -100,16 +121,24 @@ const ScoutReports: React.FC<ScoutReportsProps> = ({ athleteId, athlete }) => {
       </div>
 
       <div className={styles.reportsList}>
-        {reports.map((report) => (
-          <ScoutReportCard
-            key={report._id}
-            report={report}
-            onClick={() => {
-              // Navigate to detailed report view
-              window.location.href = `/reports/${report._id}`;
-            }}
-          />
-        ))}
+        {reports.map((report) => {
+          const userOwnsReport = isUserReport(report);
+          return (
+            <ScoutReportCard
+              key={report._id}
+              report={report}
+              onClick={
+                userOwnsReport
+                  ? () => {
+                      // Navigate to detailed report view only if user owns the report
+                      window.location.href = `/reports/${report._id}`;
+                    }
+                  : undefined
+              }
+              isRestricted={!userOwnsReport}
+            />
+          );
+        })}
       </div>
     </div>
   );
