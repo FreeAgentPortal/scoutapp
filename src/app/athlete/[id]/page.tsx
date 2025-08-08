@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import WorkInProgress from "@/components/workInProgress/WorkInProgress.component";
 import Athlete from "@/views/athlete/Athlete.view";
 
 export const metadata: Metadata = {

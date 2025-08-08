@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useApiHook from "@/hooks/useApi";
 import styles from "./LoginView.module.scss";
+import AlertCenter from "@/layout/alertCenter/AlertCenter.layout";
 
 const LoginView: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
@@ -21,9 +22,7 @@ const LoginView: React.FC = () => {
         window.location.reload();
       }
     },
-    onErrorCallback: (error) => {
-      console.error("Login failed:", error);
-    },
+    onErrorCallback: (error) => {},
   }) as any; // Type assertion needed for mutation
 
   const handleInitialLogin = () => {
@@ -65,6 +64,7 @@ const LoginView: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <AlertCenter />
       <motion.div
         className={styles.content}
         initial={{ opacity: 0, scale: 0.9 }}
