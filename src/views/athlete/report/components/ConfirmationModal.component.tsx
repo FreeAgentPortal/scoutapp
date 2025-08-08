@@ -29,10 +29,10 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   // Calculate average rating from all scores
   const calculateAverageRating = (): number => {
     if (!formData.ratingBreakdown) return 0;
-    
-    const scores = Object.values(formData.ratingBreakdown).map(rating => rating.score);
+
+    const scores = Object.values(formData.ratingBreakdown).map((rating) => rating.score);
     if (scores.length === 0) return 0;
-    
+
     const total = scores.reduce((sum, score) => sum + score, 0);
     return Math.round((total / scores.length) * 10) / 10; // Round to 1 decimal place
   };
@@ -44,14 +44,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>
-            {isEdit ? "Update Final Report?" : "Submit Final Report?"}
-          </h2>
-          <button 
-            className={styles.closeButton} 
-            onClick={onClose}
-            disabled={isSubmitting}
-          >
+          <h2 className={styles.modalTitle}>{isEdit ? "Update Final Report?" : "Submit Final Report?"}</h2>
+          <button className={styles.closeButton} onClick={onClose} disabled={isSubmitting}>
             ×
           </button>
         </div>
@@ -61,11 +55,12 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             <div className={styles.warningIcon}>⚠️</div>
             <div className={styles.warningContent}>
               <p className={styles.warningText}>
-                You are about to submit this report as a <strong>final draft</strong> for <strong>{athleteName}</strong>.
+                You are about to submit this report as a <strong>final draft</strong> for <strong>{athleteName}</strong>
+                .
               </p>
               <p className={styles.warningSubtext}>
-                Once submitted, this report will be sent to the admin panel for review. After finalization, 
-                the Player Evaluation section will be <strong>locked and cannot be edited further</strong>.
+                Once submitted, this report will be sent to the admin panel for review. After finalization, the Player
+                Evaluation section will be <strong>locked and cannot be edited further</strong>.
               </p>
             </div>
           </div>
@@ -74,12 +69,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             <h3 className={styles.previewTitle}>Final Rating Summary</h3>
             <div className={styles.ratingDisplay}>
               <div className={styles.diamondContainer}>
-                <DiamondRating 
-                  rating={averageRating} 
-                  size="large" 
-                  showValue={true} 
-                  className={styles.previewRating}
-                />
+                <DiamondRating rating={averageRating} size="large" showValue={true} className={styles.previewRating} />
               </div>
               <div className={styles.ratingDetails}>
                 <div className={styles.ratingValue}>
@@ -87,7 +77,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                   <span className={styles.ratingScale}>/ 5.0</span>
                 </div>
                 <div className={styles.ratingMeta}>
-                  Based on {attributeCount} evaluation{attributeCount !== 1 ? 's' : ''}
+                  Based on {attributeCount} evaluation{attributeCount !== 1 ? "s" : ""}
                 </div>
               </div>
             </div>
@@ -108,29 +98,22 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           )}
 
           <div className={styles.confirmationText}>
-            <p>
-              Are you sure you want to {isEdit ? "update" : "submit"} this report as final?
-            </p>
+            <p>Are you sure you want to {isEdit ? "update" : "submit"} this report as final?</p>
           </div>
         </div>
 
         <div className={styles.modalActions}>
-          <button 
-            className={styles.cancelButton} 
-            onClick={onClose}
-            disabled={isSubmitting}
-          >
+          <button className={styles.cancelButton} onClick={onClose} disabled={isSubmitting}>
             Cancel
           </button>
-          <button 
-            className={styles.confirmButton} 
-            onClick={onConfirm}
-            disabled={isSubmitting}
-          >
-            {isSubmitting 
-              ? (isEdit ? "Updating..." : "Submitting...") 
-              : (isEdit ? "Update Final Report" : "Submit Final Report")
-            }
+          <button className={styles.confirmButton} onClick={onConfirm} disabled={isSubmitting}>
+            {isSubmitting
+              ? isEdit
+                ? "Updating..."
+                : "Submitting..."
+              : isEdit
+              ? "Update Final Report"
+              : "Submit Final Report"}
           </button>
         </div>
       </div>
