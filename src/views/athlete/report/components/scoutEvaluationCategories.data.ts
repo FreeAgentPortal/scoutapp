@@ -1,35 +1,42 @@
 export const scoutEvaluationCategories = [
   {
     category: "Mental & Intangible Attributes",
-    attributes: ["Football IQ", "Competitiveness", "Coachability", "Leadership", "Discipline", "Focus"],
+    attributes: ["Instincts", "Vision", "Creativity", "Motor", "Effort", "Toughness"],
   },
   {
     category: "Athleticism",
-    attributes: ["Speed", "Acceleration", "Agility", "Balance", "Explosiveness"],
+    attributes: ["Running Ability", "Ability to Break Tackles", "Elusiveness", "Recovery Speed", "Fluidity"],
   },
   {
     category: "Physical Tools",
-    attributes: ["Size", "Strength", "Flexibility", "Mobility", "Frame"],
+    attributes: ["Leverage Use"],
   },
   {
     category: "Technical Skills",
     attributes: [
-      "Footwork",
-      "Hands",
-      "Ball Skills",
-      "Tackling Technique",
-      "Blocking Technique",
-      "Coverage Ability",
-      "Throwing Mechanics",
+      "Ball Security",
+      "Pocket Awareness",
+      "Accuracy",
+      "Route Running",
+      "Contested Catch Ability",
+      "Production",
+      "Run Blocking",
+      "Pass Blocking",
+      "Sustainable Blocks",
+      "Press Coverage",
+      "Man Coverage",
+      "Zone Coverage",
+      "Defensive Run Support",
+      "Shed Ability",
     ],
   },
   {
     category: "Potential & Projection",
-    attributes: ["Ceiling", "Versatility", "Durability", "Injury Risk"],
+    attributes: [],
   },
   {
     category: "Overall",
-    attributes: ["Diamond Rating"],
+    attributes: [],
   },
 ] as const;
 
