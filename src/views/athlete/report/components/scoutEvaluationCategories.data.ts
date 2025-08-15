@@ -1,11 +1,29 @@
 export const scoutEvaluationCategories = [
   {
     category: "Mental & Intangible Attributes",
-    attributes: ["Instincts", "Vision", "Creativity", "Motor", "Effort", "Toughness"],
+    attributes: [
+      "Instincts",
+      "Vision",
+      "Creativity", 
+      "Motor", 
+      "Effort", 
+      "Toughness",
+      "Accuracy",
+      "Elusiveness",
+      "Route Running",
+      "Production",
+      "Motor",
+      "Ability to Break Tackles"
+    ],
   },
   {
     category: "Athleticism",
-    attributes: ["Running Ability", "Ability to Break Tackles", "Elusiveness", "Recovery Speed", "Fluidity"],
+    attributes: [
+      "Running Ability", 
+      "Ability to Break Tackles", 
+      "Elusiveness", 
+      "Recovery Speed", 
+      "Fluidity"],
   },
   {
     category: "Physical Tools",
@@ -23,11 +41,22 @@ export const scoutEvaluationCategories = [
       "Run Blocking",
       "Pass Blocking",
       "Sustainable Blocks",
+      "Blocking: Finish",
+      "Blocking: Effort",
+      "Blocking: Toughness",
+      "Blocking: Leverage Use",
       "Press Coverage",
       "Man Coverage",
       "Zone Coverage",
       "Defensive Run Support",
       "Shed Ability",
+      "Coverage: Press",
+      "Coverage: Man",
+      "Coverage: Zone",
+      "Coverage: Recovery Speed",
+      "Coverage: Fluidity",
+      "Coverage: Defensive Run Support",
+      "Coverage: Shed Ability"
     ],
   },
   {
