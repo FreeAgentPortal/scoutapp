@@ -1,5 +1,14 @@
 // Leagues data for scout profile selection
 export const LEAGUES_DATA = [
+  // Short List to Start
+  "NFL",
+  "UFL",
+  "CFL",
+  "AF1",
+  "ELF",
+  "LFA",
+  "IFL",
+/*
   // Professional American Leagues
   "National Football League (NFL)",
   "National Basketball Association (NBA)",
@@ -111,6 +120,7 @@ export const LEAGUES_DATA = [
   "Counter-Strike Major Championships",
   "Dota 2 Pro Circuit",
   "Valorant Champions Tour",
+  */
 ] as const;
 
 export type League = typeof LEAGUES_DATA[number];
