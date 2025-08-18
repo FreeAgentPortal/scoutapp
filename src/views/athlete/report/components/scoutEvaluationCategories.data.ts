@@ -4,6 +4,11 @@ export const scoutEvaluationCategories = [
     attributes: [
       "Instincts",
       "Vision",
+      "Competitiveness",
+      "Coachability",
+      "Leadership",
+      "Discipline",
+      "Focus",
       "Creativity", 
       "Motor", 
       "Effort", 
@@ -19,6 +24,11 @@ export const scoutEvaluationCategories = [
   {
     category: "Athleticism",
     attributes: [
+      "Speed",
+      "Acceleration",
+      "Agility",
+      "Balance",
+      "Explosiveness",
       "Running Ability", 
       "Ability to Break Tackles", 
       "Elusiveness", 
@@ -27,7 +37,14 @@ export const scoutEvaluationCategories = [
   },
   {
     category: "Physical Tools",
-    attributes: ["Leverage Use"],
+    attributes: [
+      "Size",
+      "Strength",
+      "Flexibility",
+      "Mobility",
+      "Frame",
+      "Leverage Use",
+    ],
   },
   {
     category: "Technical Skills",
@@ -56,11 +73,17 @@ export const scoutEvaluationCategories = [
   },
   {
     category: "Potential & Projection",
-    attributes: [],
+    attributes: [
+      "Versatility",
+      "Durability",
+      "Inhury Risk",
+    ],
   },
   {
     category: "Overall",
-    attributes: [],
+    attributes: [
+      "FAP Scout Grade"
+    ],
   },
 ] as const;
 
