@@ -59,7 +59,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
     defaultValues: existingReport
       ? {
           sport: existingReport.sport || "American Football",
-          league: existingReport.league || "National Football League (NFL)",
+          league: existingReport.league || "NFL",
           reportType: existingReport.reportType || "evaluation",
           ratingBreakdown: existingReport.ratingBreakdown || {},
           observations: existingReport.observations || "",
@@ -72,7 +72,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
         }
       : {
           sport: "American Football",
-          league: "National Football League (NFL)",
+          league: "NFL",
           reportType: "evaluation",
           ratingBreakdown: {},
           observations: "",
