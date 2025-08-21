@@ -51,7 +51,7 @@ const ScoutProfile: React.FC<any> = () => {
 
   const { mutate: updateScoutMutation } = useApiHook({
     method: "PUT",
-    key: ["profile", "scout"],
+    key: 'scout.update',
     successMessage: "Scout profile updated successfully!",
     queriesToInvalidate: ["profile,scout"],
   }) as any;

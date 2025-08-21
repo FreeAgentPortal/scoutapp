@@ -84,11 +84,11 @@ const ScoutWrapper = (props: Props) => {
     if (userIsLoading || profileIsLoading) return;
 
     // If there's an error fetching the scout profile
-    if (profileError) {
-      alert("Failed to load scout profile. Your account may not have proper scout access. Please contact support.");
-      logout(true);
-      return;
-    }
+    // if (profileError) {
+    //   alert("Failed to load scout profile. Your account may not have proper scout access. Please contact support.");
+    //   logout(true);
+    //   return;
+    // }
 
     // If user is logged in but has no scout profile reference
     if (loggedInData && !loggedInData?.profileRefs?.["scout"]) {

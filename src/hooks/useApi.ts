@@ -119,7 +119,7 @@ const useApiHook = (options: {
         defaultInclude: include,
         defaultPageLimit: limit,
       }),
-    enabled: enabled && method === "GET",
+    enabled: enabled && method === "GET" && !!url,
     refetchOnWindowFocus,
     retry: 1,
     staleTime: staleTime,
